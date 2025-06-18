@@ -1,0 +1,90 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+:root {
+  --background: linear-gradient(45deg, rgb(243, 244, 244) 36%, rgb(254, 254, 255) 100%);
+  --foreground: #171717;
+  --description-clr: #8f9496;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.container {
+  padding-left: 250px;
+  padding-right: 250px;
+  max-width: 100%;
+  background-color: var(--background);
+}
+
+h1 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 90px;
+  color: var(--foreground);
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.text {
+  color: var(--description-clr);
+}
+
+.wrapper {
+  background-color: white;
+  width: 100%;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup {
+  height: 600px;
+  min-width: 600px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width : 1280px) {
+  .container {
+    padding-left: 200px;
+    padding-right: 200px;
+  }
+}
+
+@media (max-width : 1024px) {
+  .container {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media (max-width : 768px) {
+  .container {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+}

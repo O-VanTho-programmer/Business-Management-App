@@ -1,0 +1,107 @@
+const sampleProducts: Product[] = [
+    {
+        product_code: 'P001',
+        product_name: 'Organic Apples (Red)',
+        quantity: 150,
+        unit: 'pcs',
+        previous_quantity: 120, // Example: after an update
+        new_quantity: 150,     // Example: current quantity
+        price: 1.50,
+        cost: 0.80,
+        ROP: 50, // Reorder Point
+        category: 'Fruit',
+        update_date: '2025-06-14T10:00:00Z',
+    },
+    {
+        product_code: 'P002',
+        product_name: 'Premium Coffee Beans (Arabica)',
+        quantity: 70,
+        unit: 'bags',
+        previous_quantity: 75,
+        new_quantity: 70,
+        price: 12.99,
+        cost: 7.50,
+        ROP: 20,
+        category: 'Beverages',
+        update_date: '2025-06-14T11:30:00Z',
+    },
+    {
+        product_code: 'P003',
+        product_name: 'Whole Wheat Bread',
+        quantity: 45,
+        unit: 'loaves',
+        previous_quantity: 50,
+        new_quantity: 45,
+        price: 3.25,
+        cost: 1.50,
+        ROP: 15,
+        category: 'Bakery',
+        update_date: '2025-06-13T09:15:00Z',
+    },
+    {
+        product_code: 'P004',
+        product_name: 'Artisan Cheese (Cheddar)',
+        quantity: 22,
+        unit: 'blocks',
+        previous_quantity: 24,
+        new_quantity: 22,
+        price: 8.75,
+        cost: 4.20,
+        ROP: 10,
+        category: 'Dairy',
+        update_date: '2025-06-13T14:45:00Z',
+    },
+    {
+        product_code: 'P005',
+        product_name: 'Organic Milk (1 Gallon)',
+        quantity: 10,
+        unit: 'gallons', // Example: low stock
+        previous_quantity: 15,
+        new_quantity: 10,
+        price: 4.99,
+        cost: 3.00,
+        ROP: 10, // At ROP
+        category: 'Dairy',
+        update_date: '2025-06-12T16:00:00Z',
+    },
+    {
+        product_code: 'P006',
+        product_name: 'Fresh Eggs (Large)',
+        quantity: 5,
+        unit: 'dozens', // Example: below ROP
+        previous_quantity: 20,
+        new_quantity: 5,
+        price: 3.99,
+        cost: 2.50,
+        ROP: 10,
+        category: 'Dairy',
+        update_date: '2025-06-11T08:00:00Z',
+    },
+    {
+        product_code: 'P007',
+        product_name: 'Avocado (Haas)',
+        quantity: 0, // Example: out of stock
+        unit: 'pcs',
+        previous_quantity: 10,
+        new_quantity: 0,
+        price: 2.00,
+        cost: 1.00,
+        ROP: 30,
+        category: 'Fruit',
+        update_date: '2025-06-11T12:00:00Z',
+    },
+    {
+        product_code: 'P008',
+        product_name: 'Canned Tomatoes',
+        quantity: 200,
+        unit: 'cans',
+        price: 1.20,
+        cost: 0.60,
+        ROP: 50,
+        category: 'Pantry',
+        update_date: '2025-06-10T09:00:00Z',
+        // previous_quantity and new_quantity are optional, so omitted here for variety
+    },
+];
+
+export default sampleProducts;

@@ -1,0 +1,35 @@
+.links {
+    display: flex;
+}
+
+.links li a {
+    display: flex;
+    height: 60px;
+    padding: 0 20px;
+    align-items: center;
+    white-space: nowrap;
+}
+
+.links li a:hover {
+    background: var(--color-gray-100);
+}
+
+.dropdown_menu{
+    position: relative;
+}
+
+.dropdown_menu a {
+    gap: 8px;
+}
+
+.child_links {
+    display: none;
+    position: absolute;
+    background-color: white;
+    width: 100%;
+    z-index: 1;
+}
+
+.dropdown_menu:hover .child_links {
+    display: block;
+}
