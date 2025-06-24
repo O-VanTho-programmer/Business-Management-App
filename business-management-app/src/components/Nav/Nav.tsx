@@ -5,14 +5,14 @@ import { IoMdNotificationsOutline } from 'react-icons/io';
 
 function Nav() {
     return (
-        <nav className='container flex items-center justify-between bg-white shadow-sm'>
+        <nav className='container flex items-center justify-between bg-white! shadow-sm'>
             <div className='flex items-center'>
-                <a className='max-w-[130px]'>
+                <a href='/dashboard' className='max-w-[130px]'>
                     <img src={'/LOGO_NAME.png'} />
                 </a>
                 <ul className={styles.links}>
                     <li className={styles.dropdown_menu}>
-                        <a href='#'><span>Inventory Management</span> <FaAngleDown /></a>
+                        <a href='/dashboard/inventory'><span>Inventory Management</span> <FaAngleDown /></a>
                         <ul className={`${styles.child_links} ${styles.links}`}>
                             <li><a href='/dashboard/inventory'>Stock</a></li>
                             <li><a href='/dashboard/inventory/transactions'>Transactions</a></li>
@@ -23,6 +23,7 @@ function Nav() {
                     </li>
                     <li><a href=''>Discounts</a></li>
                     <li><a href='/dashboard/sales-report'>Sales Report</a></li>
+                    <li><a href='/dashboard/products'>Products</a></li>
                 </ul>
             </div>
 

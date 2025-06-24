@@ -1,4 +1,5 @@
 import React from 'react'
+import AlertTag from '../AlertTag/AlertTag'
 
 type Props = {
     products: Product[]
@@ -22,7 +23,7 @@ export default function ProductListTable({ products, type }: Props) {
     }, 0)
 
     return (
-        <div className='wrapper border border-gray-300 overflow-hidden rounded-xl shadow-lg'>
+        <div className='overflow-y-scroll! max-h-[500px] wrapper border border-gray-300 rounded-xl shadow-lg'>
             <div className='overflow-x-auto'>
                 <table className='w-full divide-y divide-gray-400'>
                     <thead className='bg-gray-50'>
@@ -46,7 +47,9 @@ export default function ProductListTable({ products, type }: Props) {
                                     <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Total</th>
                                 </>
                             )}
-
+                            {(type === 'low-stock' || type === 'order_placement' || type === 'all') && (
+                                <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Status</th>
+                            )}
                         </tr>
                     </thead>
 
@@ -63,8 +66,19 @@ export default function ProductListTable({ products, type }: Props) {
                                         </>
                                     )}
                                     <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity} {product.unit}</td>
-                                    {product.update_date && (
+                                    {type === 'all' && (
                                         <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.update_date}</td>
+                                    )}
+                                    {(type === 'low-stock' || type === 'order_placement' || type === 'all') && (
+                                        product.quantity === 0 ? (
+                                            <td className='py-4 px-6'>
+                                                <AlertTag icon='CircleAlert' color='red' title='Out' />
+                                            </td>
+                                        ) : product.ROP && product.ROP > product.quantity ? (
+                                            <td className='py-4 px-6'>
+                                                <AlertTag icon='CircleAlert' color='yellow' title='Low' />
+                                            </td>
+                                        ) : null
                                     )}
 
                                 </tr>

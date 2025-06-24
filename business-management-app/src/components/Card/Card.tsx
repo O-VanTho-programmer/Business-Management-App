@@ -1,11 +1,11 @@
 import React from 'react';
-import { BanknoteArrowDown , AlertTriangle, Award, BanknoteArrowUp, ChartNoAxesCombined, ChevronsDown, CircleSlash2, Layers, PackagePlus, ShoppingBag, TrendingDown, TrendingUp, XCircle } from 'lucide-react';
+import { BanknoteArrowDown , AlertTriangle, Award, BanknoteArrowUp, ChartNoAxesCombined, ChevronsDown, CircleSlash2, Layers, PackagePlus, ShoppingBag, TrendingDown, TrendingUp, XCircle, CirclePlus } from 'lucide-react';
 
 interface CardProps {
     title: string,
-    content: string,
+    content?: string,
     description?: string,
-    icon?: 'BanknoteArrowDown' | 'BanknoteArrowUp' | 'PackagePlus' | 'ChartNoAxesCombined' | 'TrendingUp' | 'TrendingDown' | 'Layers' | 'ChevronsDown' | 'CircleSlash2' | 'ShoppingBag' | 'AlertTriangle' | 'Award' | 'XCircle';
+    icon?: 'CirclePlus' | 'BanknoteArrowDown' | 'BanknoteArrowUp' | 'PackagePlus' | 'ChartNoAxesCombined' | 'TrendingUp' | 'TrendingDown' | 'Layers' | 'ChevronsDown' | 'CircleSlash2' | 'ShoppingBag' | 'AlertTriangle' | 'Award' | 'XCircle';
     iconColor?: string,
 }
 
@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({
     iconColor = 'text-yellow-500'
 }) => {
     const IconComponent = icon ? {
-        BanknoteArrowDown, BanknoteArrowUp, PackagePlus, ChartNoAxesCombined, TrendingDown, TrendingUp, Layers, ChevronsDown, CircleSlash2, ShoppingBag, AlertTriangle, Award, XCircle
+        CirclePlus, BanknoteArrowDown, BanknoteArrowUp, PackagePlus, ChartNoAxesCombined, TrendingDown, TrendingUp, Layers, ChevronsDown, CircleSlash2, ShoppingBag, AlertTriangle, Award, XCircle
     }[icon] : null
 
     return (
@@ -27,12 +27,14 @@ const Card: React.FC<CardProps> = ({
                 {IconComponent && <IconComponent size={24} className={iconColor} />}
             </div>
 
-            <div className={`text-2xl font-bold mb-2 text-gray-800`}>
-                {content}
-            </div>
+            {content &&
+                <div className="text-2xl font-bold text-gray-900 mb-2">
+                    {content}
+                </div>
+            }
 
             {description &&
-                <p className="text-gray-500 text-xs">
+                <p className="text-gray-500 text-sm">
                     {description}
                 </p>
             }
