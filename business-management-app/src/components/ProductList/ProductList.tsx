@@ -4,10 +4,11 @@ import AlertTag from '../AlertTag/AlertTag'
 
 type Props = {
     products: Product[]
-    type: 'sell' | 'order'
+    type: 'sell' | 'order',
+    handleAddProduct: (product: Product) => void,
 }
 
-export default function ProductList({ products, type }: Props) {
+export default function ProductList({ products, type, handleAddProduct }: Props) {
 
     if (products.length === 0) {
         return (
@@ -50,6 +51,7 @@ export default function ProductList({ products, type }: Props) {
                         <div className='absolute right-4 top-1/2 -translate-y-1/2
                             opacity-0 group-hover:opacity-100 transition-opacity duration-300 ease-in-out'>
                             <button
+                                onClick={() => handleAddProduct(product)}
                                 className='cursor-pointer p-2 bg-blue-500 text-white rounded-full shadow-md
                            hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
                            transition-colors duration-200'

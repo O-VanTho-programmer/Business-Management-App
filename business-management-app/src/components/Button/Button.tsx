@@ -1,16 +1,16 @@
-import { RotateCcw, Save } from 'lucide-react';
+import { PlusCircle, RotateCcw, Save, Tag } from 'lucide-react';
 import React from 'react'
 
 type Props = {
     isDisable: boolean,
-    icon: 'Save' | 'RotateCcw'
+    icon: 'Save' | 'RotateCcw' | 'PlusCircle' | 'Tag',
     title: string,
     text_color?: string,
     bg_color?: "red" | "gray" | "blue",
 }
 
 export default function Button({ isDisable, icon, title, text_color = 'text-gray-700', bg_color = "gray" }: Props) {
-    const IconComponent = { Save, RotateCcw }[icon];
+    const IconComponent = { Save, RotateCcw, PlusCircle, Tag }[icon];
 
     let bgColor = "";
     let bgColorHover = "";

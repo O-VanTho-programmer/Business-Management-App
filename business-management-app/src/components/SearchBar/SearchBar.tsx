@@ -4,10 +4,11 @@ import React, { useState } from 'react'
 type Props = {
     onSearch: (query: string) => void,
     placeholder?: string,
-    bg_color?: string
+    bg_color?: string,
+    border_color?: string,
 }
 
-export default function SearchBar({ onSearch, placeholder = "Search...", bg_color = "bg-gray-100"}: Props) {
+export default function SearchBar({ onSearch, placeholder = "Search...", bg_color = "bg-gray-100", border_color = "border-gray-300"}: Props) {
     const [value, setValue] = useState("");
 
     const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -17,7 +18,7 @@ export default function SearchBar({ onSearch, placeholder = "Search...", bg_colo
     }
 
     return (
-        <div className={`flex items-center py-3 px-2 ${bg_color} rounded-lg`}>
+        <div className={`flex items-center py-3 px-2 ${bg_color} border ${border_color} rounded-lg`}>
             <Search />
             <input
                 className='outline-none border-none ml-2 w-full'
