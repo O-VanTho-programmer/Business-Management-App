@@ -3,14 +3,13 @@
 import React, { useState } from 'react'
 import AlertTag from '../AlertTag/AlertTag'
 import ChangeQuantityModal from '../Modals/ChangeQuantityModal/ChangeQuantityModal';
-import Button from '../Button/Button';
 import { Trash2 } from 'lucide-react';
 
 type Props = {
     products: Product[]
     type: 'all' | 'low-stock' | 'order_placement' | 'sell',
-    onQuantityChange?: (product_code: string, added_quantity: number) => void
-    onDeleteProduct?: (product_code: string) => void    
+    onQuantityChange?: (product_code: string, quantity_change: number) => void
+    onDeleteProduct?: (product_code: string) => void
 }
 
 export default function ProductListTable({ products, type, onQuantityChange, onDeleteProduct }: Props) {
@@ -48,7 +47,7 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                             )}
 
                             <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>{type === 'order_placement' ? "Added Quantity" : "Quantity"}</th>
-                            
+
                             {type === 'all' && (
                                 <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Last Update</th>
                             )}
@@ -76,18 +75,17 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                 <tr key={product.product_code} className='h-[50px]'>
                                     <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.product_code}</td>
                                     <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.product_name}</td>
-                                    {type === 'order_placement' && product.added_quantity ? (
-
+                                    {type === 'order_placement' && product.quantity_change && (
                                         <>
                                             <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity}</td>
-                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity + product.added_quantity}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity + product.quantity_change}</td>
                                             <td className='py-4 px-6 whitespace-nowrap text-sm cursor-pointer text-blue-600 hover:text-blue-800'
                                                 onClick={() => {
                                                     setSelectedProduct(product);
                                                     setOpenModalChangeQuantity(true);
                                                 }}>
 
-                                                {product.added_quantity} {product.unit}
+                                                {product.quantity_change} {product.unit}
                                             </td>
                                             <td className='py-4 px-6 whitespace-nowrap text-sm'>
                                                 <div className="flex items-center justify-end space-x-2">
@@ -101,13 +99,28 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                                 </div>
                                             </td>
                                         </>
+                                    )}
 
-                                    ) : (
-                                        <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity} {product.unit}</td>
+                                    {type === 'sell' && product.price && product.quantity_change && (
+                                        <>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm cursor-pointer text-blue-600 hover:text-blue-800'
+                                                onClick={() => {
+                                                    setSelectedProduct(product);
+                                                    setOpenModalChangeQuantity(true);
+                                                }}>
+
+                                                {product.quantity_change} {product.unit}
+                                            </td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.price}/{product.unit}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.price * product.quantity_change}</td>
+                                        </>
                                     )}
 
                                     {type === 'all' && (
-                                        <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.update_date}</td>
+                                        <>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity} {product.unit}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.update_date}</td>
+                                        </>
                                     )}
                                     {(type === 'low-stock' || type === 'all') && (
                                         product.quantity === 0 ? (
@@ -143,6 +156,7 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                 onOpen={openModalChangeQuantity}
                 onSaveNewQuantity={onQuantityChange}
                 onClose={() => setOpenModalChangeQuantity(false)}
+                type={type}
             />
         </div >
     )

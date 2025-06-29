@@ -8,7 +8,7 @@ export async function POST(req: Request) {
 
         let totalAmount = 0;
         for(let p of products) {
-            totalAmount += p.added_quantity * p.price;
+            totalAmount += p.quantity_change * p.price;
         }
 
         const orderId = Math.random().toString(36).substr(2, 5).toUpperCase();
@@ -20,18 +20,18 @@ export async function POST(req: Request) {
         for(let p of products) {
             await pool.query(
                 `INSERT INTO order_product (order_id, product_id, order_quantity, price_at_order) VALUES (?, ?, ?, ?)`,
-                [orderId, p.product_code, p.added_quantity, p.price]
+                [orderId, p.product_code, p.quantity_change, p.price]
             )
 
             await pool.query(`
                 UPDATE product
                 SET quantity_in_stock = ?
                 WHERE product_id = ?; 
-            `, [p.quantity + p.added_quantity, p.product_code]);
+            `, [p.quantity + p.quantity_change, p.product_code]);
 
             await pool.query(
                 `INSERT INTO inventory_transaction (type, quantity, previous_quantity, new_quantity, product_id, user_id, order_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                ['RESTOCK', p.added_quantity, p.quantity, p.added_quantity + p.quantity, p.product_code, userId, orderId]
+                ['RESTOCK', p.quantity_change, p.quantity, p.quantity_change + p.quantity, p.product_code, userId, orderId]
             );
         }
 

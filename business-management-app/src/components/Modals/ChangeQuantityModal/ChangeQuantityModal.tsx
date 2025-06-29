@@ -1,28 +1,39 @@
+import { useAlert } from '@/components/AlertProvider/AlertContext';
 import { X } from 'lucide-react';
 import React, { useState } from 'react'
 
 type Props = {
+  type: 'all' | 'low-stock' | 'order_placement' | 'sell',
   product: Product | null,
   onOpen: boolean,
   onClose: () => void,
-  onSaveNewQuantity?: (product_code: string, added_quantity: number) => void
+  onSaveNewQuantity?: (product_code: string, quantity_change: number) => void
 }
 
-export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNewQuantity }: Props) {
+export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNewQuantity, type }: Props) {
 
   const [quantityInput, setQuantityInput] = useState<number>(1);
-  const newQuantity = product ? product.quantity + quantityInput : 0;
+  const { showAlert } = useAlert(); 
 
   if (product === null || !onOpen) {
     return null;
   }
 
   const handleSave = () => {
+    if(type === 'sell' && product.quantity < quantityInput){
+      showAlert("Not enough available quantity!", 'error');
+      return;
+    }
+
     if (onSaveNewQuantity && product) {
       onSaveNewQuantity(product.product_code, quantityInput);
     }
 
     onClose();
+  }
+
+  if (type !== 'sell' && type !== 'order_placement') {
+    return null;
   }
 
   return (
@@ -37,7 +48,7 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
             <X size={20} />
           </button>
           <h2 className="text-xl font-bold mb-4 text-gray-800">
-            Add Quantity to Order
+            {type === 'sell' ? 'Adjust quantity to Sell' : 'Add Quantity to Order'}
           </h2>
 
           <div className="mb-4">
@@ -48,7 +59,7 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
 
           <div className="mb-6">
             <label htmlFor="quantity-input" className="block text-gray-700 text-sm font-bold mb-2">
-              Quantity to Add:
+              {type === 'sell' ? 'Quantity to Sell:' : 'Quantity to Add:'}
             </label>
             <input
               type="number"
@@ -65,9 +76,16 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
             />
           </div>
 
-          <p className="text-gray-600 mb-6 text-sm">
-            Projected Stock after adding: <span className="font-bold">{newQuantity} {product.unit}</span>
-          </p>
+          {type === 'sell' ? (
+            <p className="text-gray-600 mb-6 text-sm">
+              Projected Stock after selling: <span className="font-bold">{product.quantity - quantityInput} {product.unit}</span><br />
+              Total Price: <span className="font-bold">${((product.price || 0) * quantityInput).toFixed(2)}</span>
+            </p>
+          ) : (
+            <p className="text-gray-600 mb-6 text-sm">
+              Projected Stock after adding: <span className="font-bold">{product.quantity + quantityInput} {product.unit}</span>
+            </p>
+          )}
 
           <div className="flex justify-end space-x-3">
             <button

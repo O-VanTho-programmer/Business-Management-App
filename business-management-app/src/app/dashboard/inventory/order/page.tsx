@@ -32,19 +32,19 @@ function Order() {
 
                 updated[existIndex] = {
                     ...existProduct,
-                    added_quantity: (existProduct.added_quantity || 1) + 1
+                    quantity_change: (existProduct.quantity_change || 1) + 1
                 }
 
                 return updated;
             }
 
-            return [...prev, { ...product, added_quantity: 1 }];
+            return [...prev, { ...product, quantity_change: 1 }];
         })
     }
 
-    const handleChangeQuantity = (product_code: string, added_quantity: number) => {
+    const handleChangeQuantity = (product_code: string, quantity_change: number) => {
         setSelectedProducts(prev =>
-            prev.map(product => product.product_code === product_code ? { ...product, added_quantity: added_quantity } : product)
+            prev.map(product => product.product_code === product_code ? { ...product, quantity_change: quantity_change } : product)
         )
     }
 

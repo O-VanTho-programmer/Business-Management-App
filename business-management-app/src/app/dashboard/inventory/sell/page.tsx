@@ -6,7 +6,14 @@ import { CirclePlus } from 'lucide-react'
 import React, { useState } from 'react'
 
 function SaleProduct() {
+    const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
     const [openPopup, setOpenPopup] = useState<boolean>(false);
+
+    const handleChangeQuantity = (product_code: string, quantity_change: number) => {
+        setSelectedProducts(prev => 
+            prev.map(product => product.product_code === product_code ? {...product, quantity_change: quantity_change} : product)
+        )
+    }
 
     return (
         <div>
@@ -21,12 +28,14 @@ function SaleProduct() {
                     <button onClick={() => setOpenPopup(true)} className='text-gray-500 hover:text-blue-500 cursor-pointer'><CirclePlus size={30} /></button>
                 </div>
 
-                <ProductListTable products={[]} type='sell' />
+                <ProductListTable products={selectedProducts || []} onQuantityChange={handleChangeQuantity} type='sell' />
 
 
             </div>
             {openPopup && (
                 <AddSaleProductPopup 
+                    selectedProducts={selectedProducts}
+                    setSelectedProducts={setSelectedProducts}
                     onClose={() => setOpenPopup(false)}
                 />
             )}

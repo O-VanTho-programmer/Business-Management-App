@@ -4,7 +4,7 @@ const sampleProducts: Product[] = [
         product_name: 'Organic Apples (Red)',
         quantity: 150,
         unit: 'pcs',
-        added_quantity: 120, // Example: after an update
+        quantity_change: 120, // Example: after an update
         price: 1.50,
         cost: 0.80,
         ROP: 50, // Reorder Point
@@ -16,7 +16,7 @@ const sampleProducts: Product[] = [
         product_name: 'Premium Coffee Beans (Arabica)',
         quantity: 70,
         unit: 'bags',
-        added_quantity: 75,
+        quantity_change: 75,
         price: 12.99,
         cost: 7.50,
         ROP: 20,
@@ -28,7 +28,7 @@ const sampleProducts: Product[] = [
         product_name: 'Whole Wheat Bread',
         quantity: 45,
         unit: 'loaves',
-        added_quantity: 50,
+        quantity_change: 50,
         price: 3.25,
         cost: 1.50,
         ROP: 15,
@@ -40,7 +40,7 @@ const sampleProducts: Product[] = [
         product_name: 'Artisan Cheese (Cheddar)',
         quantity: 22,
         unit: 'blocks',
-        added_quantity: 24,
+        quantity_change: 24,
         price: 8.75,
         cost: 4.20,
         ROP: 10,
@@ -52,7 +52,7 @@ const sampleProducts: Product[] = [
         product_name: 'Organic Milk (1 Gallon)',
         quantity: 10,
         unit: 'gallons', // Example: low stock
-        added_quantity: 15,
+        quantity_change: 15,
         price: 4.99,
         cost: 3.00,
         ROP: 10, // At ROP
@@ -64,7 +64,7 @@ const sampleProducts: Product[] = [
         product_name: 'Fresh Eggs (Large)',
         quantity: 5,
         unit: 'dozens', // Example: below ROP
-        added_quantity: 20,
+        quantity_change: 20,
         price: 3.99,
         cost: 2.50,
         ROP: 10,
@@ -76,7 +76,7 @@ const sampleProducts: Product[] = [
         product_name: 'Avocado (Haas)',
         quantity: 0, // Example: out of stock
         unit: 'pcs',
-        added_quantity: 10,
+        quantity_change: 10,
         price: 2.00,
         cost: 1.00,
         ROP: 30,
