@@ -1,36 +1,21 @@
 'use client'
 import Card from '@/components/Card/Card'
+import Loading from '@/components/Loading/Loading';
 import ProductListTable from '@/components/ProductListTable/ProductListTable'
 import SearchBar from '@/components/SearchBar/SearchBar';
 import TagFilter from '@/components/TagFilter/TagFilter';
 import useFetchList from '@/hooks/useFetchList';
 import useInventoryStatus from '@/hooks/useInventoryStatus';
-import useQuery from '@/hooks/useQuery';
-import React, { useEffect, useState } from 'react'
+import useProductQuery from '@/hooks/useProductQuery';
+import React, { useState } from 'react'
 
 function Inventory() {
 
-  const [queryCollection, setQueryCollection] = useState({
-    search: '',
-    stock: ''
-  });
+  
+  const { query, changeSearchVal, changeStockFilter, resetStockFilter} = useProductQuery();
 
-  const changeSearchVal = (val: string) => {
-    setQueryCollection(prev => {
-      const updated = {
-        ...prev,
-        search: val
-      }
-      updateQuery(updated);
-
-      return updated;
-    });
-
-  }
-  const { query, updateQuery, resetQuery } = useQuery("");
-
-  const { products, loading, error } = useFetchList("products", query);
-  const {totalStock, totalLowStockItem, totalOutStockItem} = useInventoryStatus();
+  const { data: products, loading, error } = useFetchList("products", query);
+  const { totalStock, totalLowStockItem, totalOutStockItem } = useInventoryStatus();
 
   const [activeFilter, setActiveFilter] = useState<string[]>(["All"]);
 
@@ -42,19 +27,16 @@ function Inventory() {
 
   const handleFilter = (filter: string) => {
     if (filter === "All") {
-      resetQuery();
+      resetStockFilter();
+      return;
     }
 
     setActiveFilter(filter ? [filter] : []);
-    setQueryCollection(prev => {
-      const updated = {
-        ...prev,
-        stock: tagsValues[filter] || ""
-      };
+    changeStockFilter(tagsValues[filter] || "");
+  }
 
-      updateQuery(updated);
-      return updated;
-    });
+  if (loading) {
+    return <Loading state='loading' />;
   }
 
   return (

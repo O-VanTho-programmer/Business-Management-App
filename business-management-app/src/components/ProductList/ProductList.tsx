@@ -4,7 +4,7 @@ import AlertTag from '../AlertTag/AlertTag'
 
 type Props = {
     products: Product[]
-    type: 'sell' | 'order',
+    type?: 'sell' | 'order',
     handleAddProduct: (product: Product) => void,
 }
 

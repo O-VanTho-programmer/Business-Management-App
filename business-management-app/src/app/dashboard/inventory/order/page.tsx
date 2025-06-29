@@ -2,18 +2,25 @@
 import ProductListTable from '@/components/ProductListTable/ProductListTable'
 import ProductList from '@/components/ProductList/ProductList';
 import SearchBar from '@/components/SearchBar/SearchBar'
+import OrderHistory from '@/components/OrderHistory/OrderHistory';
 import React, { useEffect, useState } from 'react'
+import { useAlert } from '@/components/AlertProvider/AlertContext';
 import useFetchList from '@/hooks/useFetchList';
-import useQuery from '@/hooks/useQuery';
+import Loading from '@/components/Loading/Loading';
+import Button from '@/components/Button/Button';
+import api from '@/lib/axios';
+import useProductQuery from '@/hooks/useProductQuery';
 
 function Order() {
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
-    const { query, updateQuery, resetQuery } = useQuery("");
-    const { products, loading, error } = useFetchList("products", query);
+    const { showAlert } = useAlert();
+
+    const { query, changeSearchVal } = useProductQuery();
+    const { data: products, loading, error } = useFetchList("products", query);
 
     useEffect(() => {
         console.log(selectedProducts);
-    },[selectedProducts])
+    }, [selectedProducts])
 
     const handleAddProduct = (product: Product) => {
         setSelectedProducts(prev => {
@@ -25,40 +32,68 @@ function Order() {
 
                 updated[existIndex] = {
                     ...existProduct,
-                    new_quantity: (existProduct.new_quantity || 1) + 1
+                    added_quantity: (existProduct.added_quantity || 1) + 1
                 }
 
                 return updated;
             }
 
-            return [...prev, { ...product, new_quantity: 1 }];
+            return [...prev, { ...product, added_quantity: 1 }];
         })
     }
 
-    const [queryCollection, setQueryCollection] = useState({
-        search: '',
-        stock: ''
-    });
+    const handleChangeQuantity = (product_code: string, added_quantity: number) => {
+        setSelectedProducts(prev =>
+            prev.map(product => product.product_code === product_code ? { ...product, added_quantity: added_quantity } : product)
+        )
+    }
 
-    const changeSearchVal = (val: string) => {
-        setQueryCollection(prev => {
-            const updated = {
-                ...prev,
-                search: val
+    const handleDeleteOrderProduct = (product_code: string) => {
+        setSelectedProducts(prev => prev.filter(p => p.product_code !== product_code));
+    }
+
+    const handlePlaceOrder = async () => {
+        if (selectedProducts.length === 0) {
+            showAlert('Please select at least one product to place an order.', 'warning');
+            return;
+        }
+
+        try {
+            const res = await api.post('/action/place_order', {
+                products: selectedProducts,
+                userId: 'U123',
+            });
+
+            if (res.status === 200) {
+                setSelectedProducts([]);
+                showAlert('Order placed successfully!', 'success');
             }
-            updateQuery(updated);
+        } catch (error) {
+            console.error("Error placing order:", error);
+            showAlert('Failed to place order. Please try again.', 'error');
+        }
+    }
 
-            return updated;
-        });
+    const { data: orderHistory } = useFetchList("orders");
+
+    useEffect(() => {
+        console.log(orderHistory);
+    }, [orderHistory])
+
+    if (loading) {
+        return <Loading state='loading' />;
     }
 
     return (
         <div className=''>
-            <h1>Order Placement</h1>
+            <div className='mt-4 flex justify-between items-center gap-4 w-2/3 pr-4'>
+                <h1>Order Placement</h1>
+                <Button onClick={handlePlaceOrder} text_color='text-white' icon='PackagePlus' bg_color='blue' title='Place Order' isDisable={false} />
+            </div>
 
             <div className='flex gap-4 max-h-[580px]'>
                 <div className='wrapper p-4 flex-2/3'>
-                    <ProductListTable products={selectedProducts} type='order_placement' />
+                    <ProductListTable onDeleteProduct={handleDeleteOrderProduct} onQuantityChange={handleChangeQuantity} products={selectedProducts} type='order_placement' />
                 </div>
 
                 <div className='wrapper p-4 flex-1/3 flex flex-col gap-3'>
@@ -67,6 +102,9 @@ function Order() {
                     <ProductList handleAddProduct={handleAddProduct} products={products} type='order' />
                 </div>
             </div>
+
+            {/* Order History Section */}
+            <OrderHistory orders={orderHistory || []} />
         </div>
     )
 }

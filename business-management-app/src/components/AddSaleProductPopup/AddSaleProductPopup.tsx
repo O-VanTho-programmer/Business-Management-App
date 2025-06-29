@@ -11,13 +11,17 @@ type Props = {
 export default function AddSaleProductPopup({ onClose }: Props) {
   const [searchVal, setSearchVal] = useState<string>("");
 
+  const addProduct = (product: Product) => {
+
+  }
+
   return (
     <div className='overlay'>
       <div className='h-full w-full absolute' onClick={onClose}></div>
       <div className='popup'>
         <div className='wrapper p-4 flex-1/3 flex flex-col gap-3 h-full'>
           <SearchBar placeholder='Search products' onSearch={setSearchVal} />
-          <ProductList products={sampleProducts} type='sell'/>
+          <ProductList handleAddProduct={addProduct} products={sampleProducts} type='sell'/>
         </div>
       </div>
     </div>

@@ -3,8 +3,7 @@ interface Product {
     product_name: string;
     quantity: number;
     unit: string;
-    previous_quantity?: number;
-    new_quantity?: number;
+    added_quantity?: number;
     price?: number;
     cost?: number;
     ROP?: number;

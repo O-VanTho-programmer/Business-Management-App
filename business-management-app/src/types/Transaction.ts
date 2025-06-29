@@ -9,6 +9,7 @@ interface InventoryTransaction {
     previous_quantity: number,
     new_quantity: number,
     user_code: string,
+    order_id?: string,
 }
 
 interface RevenueTransaction{
