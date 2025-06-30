@@ -1,10 +1,11 @@
 import React from 'react';
 
+import { SaleTransaction } from '@/types/SaleTransaction';
 type Props = {
-    orders: Order[]
+    trans: SaleTransaction[]
 }
 
-const OrderHistory = ({orders}: Props) => {
+const SaleTransactionHistory = ({trans}: Props) => {
     return (
         <div className="bg-white rounded-xl shadow-lg p-4 mt-8 w-full">
             <h2 className="text-xl font-semibold mb-4">Order History</h2>
@@ -20,15 +21,15 @@ const OrderHistory = ({orders}: Props) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {orders.map((order) => (
-                            <tr key={order.order_id} className="border-b last:border-b-0">
-                                <td className="px-4 py-2 font-mono">{order.order_id}</td>
-                                <td className="px-4 py-2">{order.order_date}</td>
+                        {trans.map((order) => (
+                            <tr key={order.trans_id} className="border-b last:border-b-0">
+                                <td className="px-4 py-2 font-mono">{order.trans_id}</td>
+                                <td className="px-4 py-2">{order.trans_date}</td>
                                 <td className="px-4 py-2">{order.username}</td>
                                 <td className="px-4 py-2 flex flex-wrap gap-1">
                                     {order.products.map((p, i) => (
                                         <span key={i} className="inline-block bg-gray-100 px-2 py-1 rounded">
-                                            {p.product_name} x{p.order_quantity}
+                                            {p.product_name} x{p.change_quantity}
                                         </span>
                                     ))}
                                 </td>
@@ -42,4 +43,4 @@ const OrderHistory = ({orders}: Props) => {
     );
 };
 
-export default OrderHistory;
+export default SaleTransactionHistory;

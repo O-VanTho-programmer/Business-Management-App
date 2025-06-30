@@ -111,8 +111,8 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
 
                                                 {product.quantity_change} {product.unit}
                                             </td>
-                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.price}/{product.unit}</td>
-                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.price * product.quantity_change}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>${product.price}/{product.unit}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>${product.price * product.quantity_change}</td>
                                         </>
                                     )}
 
@@ -140,11 +140,11 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                     </tbody>
                     <tfoot>
                         {type === 'sell' && (
-                            <tr className='h-[50px]'>
+                            <tr className='h-[50px] text-blue-700'>
                                 <td colSpan={2} className='font-bold text-lg py-4 px-6 whitespace-nowrap'>Total Price</td>
                                 <td className='py-4 px-6 whitespace-nowrap text-sm'></td>
                                 <td className='py-4 px-6 whitespace-nowrap text-sm'></td>
-                                <td className='font-bold text-lg py-4 px-6 text-left whitespace-nowrap '>{totalPrice}</td>
+                                <td className='font-bold text-lg py-4 px-6 text-left whitespace-nowrap '>${totalPrice}</td>
                             </tr>
                         )}
                     </tfoot>

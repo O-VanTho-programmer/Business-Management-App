@@ -1,17 +1,17 @@
-import { PackagePlus, PlusCircle, RotateCcw, Save, Tag } from 'lucide-react';
+import { PackagePlus, PlusCircle, RotateCcw, Save, ShoppingBasket, Tag } from 'lucide-react';
 import React from 'react'
 
 type Props = {
     isDisable: boolean,
     onClick?: () => void,
-    icon: 'Save' | 'RotateCcw' | 'PlusCircle' | 'Tag' | 'PackagePlus',
+    icon: 'Save' | 'RotateCcw' | 'PlusCircle' | 'Tag' | 'PackagePlus' | 'ShoppingBasket',
     title: string,
     text_color?: string,
     bg_color?: "red" | "gray" | "blue",
 }
 
 export default function Button({onClick, isDisable, icon, title, text_color = 'text-gray-700', bg_color = "gray" }: Props) {
-    const IconComponent = { Save, RotateCcw, PlusCircle, Tag, PackagePlus }[icon];
+    const IconComponent = { Save, RotateCcw, PlusCircle, Tag, PackagePlus, ShoppingBasket }[icon];
 
     let bgColor = "";
     let bgColorHover = "";

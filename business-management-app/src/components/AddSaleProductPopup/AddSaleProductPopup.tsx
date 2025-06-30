@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import sampleProducts from '@/sampleData/productsData'
 import ProductList from '../ProductList/ProductList'
 import SearchBar from '../SearchBar/SearchBar'
 import useFetchList from '@/hooks/useFetchList'
@@ -8,14 +7,14 @@ import Loading from '../Loading/Loading'
 
 type Props = {
   onClose: () => void,
-  selectedProducts: Product[], 
+  selectedProducts: Product[],
   setSelectedProducts: React.Dispatch<React.SetStateAction<Product[]>>
 }
 
 export default function AddSaleProductPopup({ onClose, selectedProducts, setSelectedProducts }: Props) {
 
-  const {query, changeSearchVal} = useProductQuery();
-  const {data: products, error, loading} = useFetchList('products', query);
+  const { query, changeSearchVal } = useProductQuery();
+  const { data: products, error, loading } = useFetchList('products', query);
 
   const addProduct = (product: Product) => {
     setSelectedProducts(prev => {
@@ -35,19 +34,19 @@ export default function AddSaleProductPopup({ onClose, selectedProducts, setSele
     });
   }
 
-  if (loading){
-    return (
-      <Loading state='loading' overlay={true} />
-    )
-  }
-
   return (
     <div className='overlay'>
       <div className='h-full w-full absolute' onClick={onClose}></div>
       <div className='popup'>
         <div className='wrapper p-4 flex-1/3 flex flex-col gap-3 h-full'>
           <SearchBar placeholder='Search products' onSearch={changeSearchVal} />
-          <ProductList handleAddProduct={addProduct} selectedProducts={selectedProducts} products={products} type='sell'/>
+
+          {loading ? (
+            <Loading state='loading' />
+
+          ) : (
+            <ProductList handleAddProduct={addProduct} selectedProducts={selectedProducts} products={products} type='sell' />
+          )}
         </div>
       </div>
     </div>

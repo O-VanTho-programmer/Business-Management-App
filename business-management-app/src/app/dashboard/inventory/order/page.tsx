@@ -2,7 +2,6 @@
 import ProductListTable from '@/components/ProductListTable/ProductListTable'
 import ProductList from '@/components/ProductList/ProductList';
 import SearchBar from '@/components/SearchBar/SearchBar'
-import OrderHistory from '@/components/OrderHistory/OrderHistory';
 import React, { useEffect, useState } from 'react'
 import { useAlert } from '@/components/AlertProvider/AlertContext';
 import useFetchList from '@/hooks/useFetchList';
@@ -10,6 +9,7 @@ import Loading from '@/components/Loading/Loading';
 import Button from '@/components/Button/Button';
 import api from '@/lib/axios';
 import useProductQuery from '@/hooks/useProductQuery';
+import SaleTransactionHistory from '@/components/SaleTransactionHistory/SaleTransactionHistory';
 
 function Order() {
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
@@ -104,7 +104,7 @@ function Order() {
             </div>
 
             {/* Order History Section */}
-            <OrderHistory orders={orderHistory || []} />
+            <SaleTransactionHistory trans={orderHistory || []} />
         </div>
     )
 }

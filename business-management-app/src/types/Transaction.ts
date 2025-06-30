@@ -20,6 +20,6 @@ interface RevenueTransaction{
     price_unit: number,
     quantity: number,
     total_price: number,
-    type: 'IN' | 'OUT',
+    type: 'ORDER' | 'SELL',
     user_code: string,
 }

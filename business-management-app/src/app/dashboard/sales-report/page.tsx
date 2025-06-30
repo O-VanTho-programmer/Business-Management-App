@@ -15,7 +15,7 @@ function SaleReport() {
             price_unit: 12,
             quantity: 20,
             total_price: 240,
-            type: 'IN',
+            type: 'ORDER',
             user_code: 'usercodene',
         },
         {
@@ -26,7 +26,7 @@ function SaleReport() {
             price_unit: 12,
             quantity: 20,
             total_price: 240,
-            type: 'IN',
+            type: 'ORDER',
             user_code: 'usercodene',
         }
     ]
