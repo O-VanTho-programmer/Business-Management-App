@@ -9,6 +9,7 @@ interface InventoryTransaction {
     previous_quantity: number,
     new_quantity: number,
     user_code: string,
+    order_id?: string,
 }
 
 interface RevenueTransaction{
@@ -19,6 +20,6 @@ interface RevenueTransaction{
     price_unit: number,
     quantity: number,
     total_price: number,
-    type: 'IN' | 'OUT',
+    type: 'ORDER' | 'SELL',
     user_code: string,
 }

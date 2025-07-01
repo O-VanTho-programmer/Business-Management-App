@@ -1,16 +1,17 @@
-import { PlusCircle, RotateCcw, Save, Tag } from 'lucide-react';
+import { PackagePlus, PlusCircle, RotateCcw, Save, ShoppingBasket, Tag } from 'lucide-react';
 import React from 'react'
 
 type Props = {
     isDisable: boolean,
-    icon: 'Save' | 'RotateCcw' | 'PlusCircle' | 'Tag',
+    onClick?: () => void,
+    icon: 'Save' | 'RotateCcw' | 'PlusCircle' | 'Tag' | 'PackagePlus' | 'ShoppingBasket',
     title: string,
     text_color?: string,
     bg_color?: "red" | "gray" | "blue",
 }
 
-export default function Button({ isDisable, icon, title, text_color = 'text-gray-700', bg_color = "gray" }: Props) {
-    const IconComponent = { Save, RotateCcw, PlusCircle, Tag }[icon];
+export default function Button({onClick, isDisable, icon, title, text_color = 'text-gray-700', bg_color = "gray" }: Props) {
+    const IconComponent = { Save, RotateCcw, PlusCircle, Tag, PackagePlus, ShoppingBasket }[icon];
 
     let bgColor = "";
     let bgColorHover = "";
@@ -32,7 +33,7 @@ export default function Button({ isDisable, icon, title, text_color = 'text-gray
 
 
     return (
-        <button disabled={isDisable} className={`flex items-center py-2 px-4 shadow-sm gap-2 rounded-lg transition-all ${text_color} ${bgColor} ${isDisable ? ("cursor-not-allowed opacity-60") : (`cursor-pointer ${bgColorHover}`)}`}>
+        <button onClick={onClick} disabled={isDisable} className={`flex items-center py-2 px-4 shadow-sm gap-2 rounded-lg transition-all ${text_color} ${bgColor} ${isDisable ? ("cursor-not-allowed opacity-60") : (`cursor-pointer ${bgColorHover}`)}`}>
             <IconComponent size={18}/>
             <span>{title}</span>
         </button>

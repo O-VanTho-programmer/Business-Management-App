@@ -3,12 +3,13 @@ import React from 'react'
 import AlertTag from '../AlertTag/AlertTag'
 
 type Props = {
-    products: Product[]
-    type: 'sell' | 'order',
+    products: Product[],
+    selectedProducts?: Product[],
+    type?: 'sell' | 'order',
     handleAddProduct: (product: Product) => void,
 }
 
-export default function ProductList({ products, type, handleAddProduct }: Props) {
+export default function ProductList({ products, selectedProducts, type, handleAddProduct }: Props) {
 
     if (products.length === 0) {
         return (

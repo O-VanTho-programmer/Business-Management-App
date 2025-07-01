@@ -33,7 +33,7 @@ function TableRevenueTransaction({ transactions }: Props) {
                   </td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.price_unit}</td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.quantity}</td>
-                  <td className={`py-4 px-6 whitespace-nowrap text-sm ${trans.type === 'IN' ? 'text-green-600' : 'text-red-500'}`}>{trans.total_price} ${trans.type === 'IN' ? <TrendingUp /> : <TrendingDown />}</td>
+                  <td className={`py-4 px-6 whitespace-nowrap text-sm ${trans.type === 'ORDER' ? 'text-green-600' : 'text-red-500'}`}>{trans.total_price} ${trans.type === 'ORDER' ? <TrendingUp /> : <TrendingDown />}</td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.user_code}</td>
                 </tr>
               )
