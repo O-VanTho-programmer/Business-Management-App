@@ -98,7 +98,7 @@ function Order() {
 
                 <div className='wrapper p-4 flex-1/3 flex flex-col gap-3'>
                     <h3 className=''>Products List</h3>
-                    <SearchBar placeholder='Search products' onSearch={changeSearchVal} />
+                    <SearchBar placeholder='Search products by name or code' onSearch={changeSearchVal} />
                     <ProductList handleAddProduct={handleAddProduct} products={products} type='order' />
                 </div>
             </div>

@@ -39,7 +39,7 @@ export default function AddSaleProductPopup({ onClose, selectedProducts, setSele
       <div className='h-full w-full absolute' onClick={onClose}></div>
       <div className='popup'>
         <div className='wrapper p-4 flex-1/3 flex flex-col gap-3 h-full'>
-          <SearchBar placeholder='Search products' onSearch={changeSearchVal} />
+          <SearchBar placeholder='Search products by name or code'  onSearch={changeSearchVal} />
 
           {loading ? (
             <Loading state='loading' />

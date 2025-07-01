@@ -53,7 +53,7 @@ function ROP() {
     return (
         <div>
             <h1 className='text-center text-2xl'>Set Reorder Point</h1>
-            <SearchBar onSearch={changeSearchVal} placeholder='Find product...' bg_color='bg-white' />
+            <SearchBar onSearch={changeSearchVal} placeholder='Search products by name or code' bg_color='bg-white' />
 
             <div className='flex justify-end items-center my-6 gap-4'>
                 {isPendingChanged && (
