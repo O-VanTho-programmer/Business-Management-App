@@ -104,7 +104,7 @@ function Order() {
             </div>
 
             {/* Order History Section */}
-            <SaleTransactionHistory trans={orderHistory || []} />
+            <SaleTransactionHistory type='order' trans={orderHistory || []} />
         </div>
     )
 }

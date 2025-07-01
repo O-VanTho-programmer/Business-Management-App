@@ -68,7 +68,7 @@ function SaleProduct() {
 
             </div>
 
-            <SaleTransactionHistory trans={historySaleTrans || []} />
+            <SaleTransactionHistory type='sell' trans={historySaleTrans || []} />
 
             {openPopup && (
                 <AddSaleProductPopup

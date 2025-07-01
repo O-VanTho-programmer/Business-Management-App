@@ -26,7 +26,7 @@ export default function TableSetROP({ products, pendingChanges, onRopChange }: P
                     <tbody>
                         {products.map((product) => {
 
-                            const displayROP = (pendingChanges[product.product_code] !== null ? pendingChanges[product.product_code] : product.ROP)
+                            const displayROP = (pendingChanges[product.product_code] === null || pendingChanges[product.product_code] === undefined ? product.ROP : pendingChanges[product.product_code])
                             const isLowStock = product.ROP !== undefined && product.ROP > product.quantity;
                             const isOutOfStock = product.quantity === 0;
 

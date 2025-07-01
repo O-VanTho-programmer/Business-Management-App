@@ -26,7 +26,7 @@ export async function POST(res: Response) {
 
             await pool.query(`
                 UPDATE product
-                SET quantity_in_stock = ?
+                SET quantity_in_stock = ?, update_date = NOW()
                 WHERE product_id = ?; 
             `, [p.quantity - p.quantity_change, p.product_code]);
 
