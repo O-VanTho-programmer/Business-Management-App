@@ -32,7 +32,7 @@ export async function POST(res: Response) {
 
             await pool.query(
                 `INSERT INTO inventory_transaction (type, quantity, previous_quantity, new_quantity, product_id, user_id, trans_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                ['SALE', p.quantity_change, p.quantity, p.quantity_change - p.quantity, p.product_code, userId, transId]
+                ['SALE', p.quantity_change, p.quantity, p.quantity - p.quantity_change, p.product_code, userId, transId]
             );
         }
         return NextResponse.json({ status: 200 });

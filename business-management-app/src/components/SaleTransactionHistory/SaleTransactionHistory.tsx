@@ -36,7 +36,7 @@ const SaleTransactionHistory = ({ trans, type }: Props) => {
                                 <td className="px-4 py-2 flex flex-wrap gap-1">
                                     {order.products.map((p, i) => (
                                         <span key={i} className="inline-block bg-gray-100 px-2 py-1 rounded">
-                                            {p.product_name} x{p.change_quantity}
+                                            {p.product_name} x{p.change_quantity}{p.unit}
                                         </span>
                                     ))}
                                 </td>

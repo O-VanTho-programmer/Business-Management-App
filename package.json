@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "lucide-react": "^0.513.0"
+    "lucide-react": "^0.513.0",
+    "react-datepicker": "^8.4.0"
   }
 }

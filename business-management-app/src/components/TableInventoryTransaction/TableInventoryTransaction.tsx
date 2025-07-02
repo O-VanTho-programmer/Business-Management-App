@@ -35,10 +35,10 @@ function TableInventoryTransaction({ transactions }: Props) {
                       {trans.type}
                     </span>
                   </td>
-                  <td className={` ${trans.type === 'SALE' ? 'text-red-600' : 'text-green-600'} font-semibold py-4 px-6 whitespace-nowrap text-sm`}>{trans.type === 'SALE' ? '-' : '+'}{trans.quantity} {trans.unit}</td>
-                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.previous_quantity}</td>
-                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.new_quantity}</td>
-                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.user_code}</td>
+                  <td className={` ${trans.type === 'SALE' ? 'text-red-600' : 'text-green-600'} font-semibold py-4 px-6 whitespace-nowrap text-sm text-right`}>{trans.type === 'SALE' ? '-' : '+'}{trans.quantity} {trans.unit}</td>
+                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.previous_quantity} {trans.unit}</td>
+                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.new_quantity} {trans.unit}</td>
+                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.user}</td>
                 </tr>
               )
             })}

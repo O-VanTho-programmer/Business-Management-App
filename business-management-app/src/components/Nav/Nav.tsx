@@ -15,7 +15,7 @@ function Nav() {
                         <a href='/dashboard/inventory'><span>Inventory Management</span> <FaAngleDown /></a>
                         <ul className={`${styles.child_links} ${styles.links}`}>
                             <li><a href='/dashboard/inventory'>Stock</a></li>
-                            <li><a href='/dashboard/inventory/transactions'>Transactions</a></li>
+                            <li><a href='/dashboard/inventory/inventory_movement'>Transactions</a></li>
                             <li><a href='/dashboard/inventory/order'>Order</a></li>
                             <li><a href='/dashboard/inventory/sell'>Sell</a></li>
                             <li><a href='/dashboard/inventory/rop'>ROP</a></li>
