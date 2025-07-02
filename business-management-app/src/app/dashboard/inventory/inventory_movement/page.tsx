@@ -2,6 +2,7 @@
 
 import Button from '@/components/Button/Button';
 import Card from '@/components/Card/Card'
+import DateRangePicker from '@/components/DateRangePicker/DateRangePicker';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import Selector from '@/components/Selector/Selector';
 import TableInventoryTransaction from '@/components/TableInventoryTransaction/TableInventoryTransaction';
@@ -10,8 +11,22 @@ import useFetchList from '@/hooks/useFetchList';
 import React, { useState } from 'react'
 
 function StockTransactions() {
+    const [start, setStart] = useState<Date | null>(null);
+    const [end, setEnd] = useState<Date | null>(null);
+
+    const handleDateChange = (startDate: Date | null, endDate: Date | null) => {
+        setStart(startDate);
+        setEnd(endDate);
+
+        if (startDate && endDate) {
+            const startStr = startDate.toISOString().split("T")[0];
+            const endStr = endDate.toISOString().split("T")[0];
+            console.log("Query:", `?start=${startStr}&end=${endStr}`);
+        }
+    };
 
     const { data: transactions, loading, error } = useFetchList('inventory_transactions');
+
     const handleChangeSearchVal = () => {
 
     }
@@ -20,7 +35,7 @@ function StockTransactions() {
     const types = { "All Type": "", "Restock": "RESTOCK", "Sale": "SALE", "Order": "ORDER" };
 
     const [selectedUserType, setSelectedUserType] = useState("");
-    const userTypes = {"All User": "", 'Owner': "OWNER", 'Employee': "EMPLOYEE"};
+    const userTypes = { "All User": "", 'Owner': "OWNER", 'Employee': "EMPLOYEE" };
 
     return (
         <div className='w-full'>
@@ -51,6 +66,7 @@ function StockTransactions() {
             </div>
 
             <div className="mt-3 bg-white p-4 rounded-xl shadow-lg flex items-center gap-4">
+                <DateRangePicker onChange={handleDateChange} />
                 <Selector options={types} selectedType={selectedType} setSelectedType={setSelectedType} />
                 <Selector options={userTypes} selectedType={selectedUserType} setSelectedType={setSelectedUserType} />
                 <SearchBar onSearch={handleChangeSearchVal} />
