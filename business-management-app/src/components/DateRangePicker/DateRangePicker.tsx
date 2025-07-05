@@ -1,30 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import CustomDateInput from "../CustomDateInput/CustomDateInput";
 
 type Props = {
     onChange: (start: Date | null, end: Date | null) => void;
+    startDate?: Date | null;
+    endDate?: Date | null;
 };
 
-export default function DateRangePicker({ onChange }: Props) {
-    const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
-    const [startDate, endDate] = dateRange;
+export default function DateRangePicker({startDate, endDate, onChange }: Props) {
 
-    const handleChange = (update: [Date | null, Date | null]) => {
-        setDateRange(update);
-        onChange(update[0], update[1]);
+    const handleChange = (dates: [Date | null, Date | null]) => {
+        const start = dates[0];
+        const end = dates[1] ? new Date(dates[1].getFullYear(), dates[1].getMonth(), dates[1].getDate() + 1) : null
+        
+        onChange(start, end);
     };
 
     return (
-        <div className="p-2 border border-gray-300 rounded">
+        <div className=" rounded">
             <DatePicker
                 selectsRange
+                customInput={<CustomDateInput/>}
                 startDate={startDate}
                 endDate={endDate}
                 onChange={handleChange}
+                dateFormat="MMMM d, yyyy"
                 isClearable
                 placeholderText="Select a date range"
-                className="w-full p-2 border rounded"
+                className="whitespace-nowrap w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200"
             />
         </div>
     );

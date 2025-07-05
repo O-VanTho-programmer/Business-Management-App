@@ -6,72 +6,107 @@ import DateRangePicker from '@/components/DateRangePicker/DateRangePicker';
 import SearchBar from '@/components/SearchBar/SearchBar';
 import Selector from '@/components/Selector/Selector';
 import TableInventoryTransaction from '@/components/TableInventoryTransaction/TableInventoryTransaction';
-import TableRevenueTransaction from '@/components/TableRevenueTransaction/TableRevenueTransaction'
 import useFetchList from '@/hooks/useFetchList';
-import React, { useState } from 'react'
+import useInventoryQuery from '@/hooks/useInventoryQuery';
+import React, { useEffect, useState, useMemo } from 'react'
 
 function StockTransactions() {
-    const [start, setStart] = useState<Date | null>(null);
-    const [end, setEnd] = useState<Date | null>(null);
+    const today = useMemo(() => new Date(), []);
+    const [startDate, setStartDate] = useState<Date | null>(today);
+    const [endDate, setEndDate] = useState<Date | null>(null);
+
+    const {
+        query, displayDateRange,
+        changeSearchVal,
+        changeStartDate, changeEndDate,
+        changeTransType, changeUserType,
+        resetQuery
+    } = useInventoryQuery();
 
     const handleDateChange = (startDate: Date | null, endDate: Date | null) => {
-        setStart(startDate);
-        setEnd(endDate);
-
-        if (startDate && endDate) {
-            const startStr = startDate.toISOString().split("T")[0];
-            const endStr = endDate.toISOString().split("T")[0];
-            console.log("Query:", `?start=${startStr}&end=${endStr}`);
-        }
+        setStartDate(startDate);
+        setEndDate(endDate);
     };
 
-    const { data: transactions, loading, error } = useFetchList('inventory_transactions');
+    const [filterQuery, setFilterQuery] = useState(query);
 
-    const handleChangeSearchVal = () => {
+    // Always default to today's transactions on mount
+    useEffect(() => {
+        setStartDate(today);
+        setEndDate(null);
+        changeStartDate(today);
+    }, []);
 
-    }
+    const { data: transactions, loading, error } = useFetchList('inventory_transactions', filterQuery);
+    const { data: summary } = useFetchList('inventory_movement_summary', "startDate=" + (startDate ? startDate.toISOString().split('T')[0] : today.toISOString().split('T')[0]) + "&endDate=" + (endDate ? endDate.toISOString().split('T')[0] : ''));
 
     const [selectedType, setSelectedType] = useState("");
     const types = { "All Type": "", "Restock": "RESTOCK", "Sale": "SALE", "Order": "ORDER" };
 
     const [selectedUserType, setSelectedUserType] = useState("");
-    const userTypes = { "All User": "", 'Owner': "OWNER", 'Employee': "EMPLOYEE" };
+    const userTypes = { 'All User': "", 'Owner': "OWNER", 'Employee': "EMPLOYEE" };
+
+    const handleApplyFilter = () => {
+        if (startDate) changeStartDate(startDate, endDate);
+        if (endDate) changeEndDate(endDate, startDate);
+        if (selectedType) changeTransType(types[selectedType as keyof typeof types]);
+        if (selectedUserType) changeUserType(userTypes[selectedUserType as keyof typeof userTypes]);
+    };
+
+    const handleReset = () => {
+        setSelectedType("");
+        setSelectedUserType("");
+        resetQuery();
+        setStartDate(today);
+        setEndDate(null);
+        changeStartDate(today);
+        changeEndDate(null);
+    };
+
+    const handleSearch = (val: string) => {
+        changeSearchVal(val);
+    }
+
+    useEffect(() => {
+        setFilterQuery(query);
+    }, [query]);
 
     return (
         <div className='w-full'>
             <h1>Inventory Movement</h1>
 
             <div className='p-5 bg-white rounded-xl shadow-lg'>
-                <div className=''>
-                    <span>Time Range:</span>
+                <div className='text-gray-600 font-medium mb-3'>
+                    <span>Time Range: </span>
+                    <span className="font-semibold">{displayDateRange}</span>
                 </div>
 
                 <div className='flex gap-4'>
                     <Card title='Total Additions'
                         description='The total number of added quantity'
-                        content="20"
+                        content={summary[0]?.totalAdditions || "0"}
                         icon='PackagePlus'
                         iconColor='text-blue-400' />
                     <Card title='Total Sale'
                         description='The total quantity of product units sold.'
-                        content="20"
+                        content={summary[0]?.totalSells || "0"}
                         icon='ShoppingBag'
                         iconColor='text-red-400' />
                     <Card title='Net Change'
                         description='The overall change in stock quantity.'
-                        content="+20"
+                        content={summary[0]?.netChange > 0 ? `+${summary[0]?.netChange}` : summary[0]?.netChange || "0"}
                         icon='ChartNoAxesCombined'
                         iconColor='text-gray-400' />
                 </div>
             </div>
 
-            <div className="mt-3 bg-white p-4 rounded-xl shadow-lg flex items-center gap-4">
-                <DateRangePicker onChange={handleDateChange} />
+            <div className="mt-5 gap-4 bg-white p-4 rounded-xl shadow-lg flex items-center justify-around">
+                <DateRangePicker startDate={startDate} endDate={endDate} onChange={handleDateChange} />
                 <Selector options={types} selectedType={selectedType} setSelectedType={setSelectedType} />
                 <Selector options={userTypes} selectedType={selectedUserType} setSelectedType={setSelectedUserType} />
-                <SearchBar onSearch={handleChangeSearchVal} />
-                <Button isDisable={false} title='Reset' icon='RotateCcw' />
-                <Button isDisable={false} title='Apply Filter' bg_color='blue' text_color='text-white' />
+                <SearchBar onSearch={handleSearch} />
+                <Button isDisable={false} title='Reset' icon='RotateCcw' onClick={handleReset} />
+                <Button isDisable={false} title='Apply Filter' bg_color='blue' text_color='text-white' onClick={handleApplyFilter} />
             </div>
 
             <div className='bg-white p-5 rounded-lg mt-5 shadow-lg '>

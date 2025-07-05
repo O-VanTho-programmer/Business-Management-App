@@ -9,7 +9,7 @@ type Props = {
 
 export default function Selector({ options, selectedType, setSelectedType }: Props) {
     return (
-        <div className="relative flex items-center border border-gray-300 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all duration-200">
+        <div className="relative min-w-fit flex items-center border border-gray-300 rounded-lg shadow-sm focus-within:ring-2 focus-within:ring-blue-500 focus-within:border-transparent transition-all duration-200">
             <select
                 value={selectedType}
                 onChange={(e) => setSelectedType(e.target.value)}
