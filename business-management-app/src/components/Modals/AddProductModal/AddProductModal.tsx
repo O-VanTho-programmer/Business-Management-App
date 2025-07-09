@@ -1,3 +1,4 @@
+import { useAlert } from '@/components/AlertProvider/AlertContext';
 import Button from '@/components/Button/Button';
 import ButtonIcon from '@/components/ButtonIcon/ButtonIcon';
 import useFetchList from '@/hooks/useFetchList';
@@ -16,6 +17,7 @@ type Props = {
 
 export default function AddProductModal({ product, onOpen, onClose, onAddNewProduct, categories, categoriesError, categoriesLoading }: Props) {
 
+    const { showAlert } = useAlert();
 
     let localCategories = categories;
     let localCategoriesError = categoriesError;
@@ -50,6 +52,11 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
     }
 
     const handleSubmit = async () => {
+        if (!productName.trim() || !quantity || !unit || !price || !cost || !category) {
+            showAlert('Please fill in all required fields!', 'warning');
+            return;
+        }
+
         setIsSubmitting(true);
 
         const newProduct: Product = {
@@ -87,9 +94,12 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
         <div className="overlay justify-end!">
 
             <form onSubmit={handleSubmit} className="bg-white h-screen shadow-lg p-6 md:p-8 max-w-2xl">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                    {/* Product Name */}
-                    <ButtonIcon icon='X' onClick={onClose} />
+                <div className='pb-4 border-b border-gray-200'>
+                    <h2 className="text-lg font-semibold text-gray-800">Add New Product</h2>
+                </div>
+
+                <ButtonIcon icon='X' onClick={onClose} />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4 mb-8">
                     <div>
                         <label htmlFor="productName" className="block text-sm font-medium text-gray-700 mb-1">
                             Product Name <span className="text-red-500">*</span>

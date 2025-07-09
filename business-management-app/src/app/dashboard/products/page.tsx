@@ -9,10 +9,12 @@ import useProductQuery from '@/hooks/useProductQuery';
 import api from '@/lib/axios';
 import React, { useState } from 'react'
 import { useAlert } from '@/components/AlertProvider/AlertContext';
+import AddCategoryModal from '@/components/Modals/AddCategoryModal/AddCategoryModal';
 
 function Products() {
   const { showAlert } = useAlert();
   const [openAddProductModel, setOpenAddProductModel] = useState<boolean>(false);
+  const [openAddCategoryModel, setOpenAddCategoryModel] = useState<boolean>(false);
 
   const {
     query,
@@ -25,7 +27,9 @@ function Products() {
 
   const { data: products, loading, error } = useFetchList('products', query);
 
-  const { data: categories, loading: isLoadingCategory, error: errorCategory } = useFetchList('categories');
+  const [categoryListKey, setCategoryListKey] = useState(0);
+  const { data: categories, loading: isLoadingCategory, error: errorCategory } = useFetchList('categories', `key=${categoryListKey}`);
+
   const categoryOptions = categories?.reduce((acc: Record<string, string>, category: any) => {
     acc[category.category_name] = category.category_id;
     return acc;
@@ -59,12 +63,32 @@ function Products() {
 
   }
 
+  const handleAddNewCategory = async (newCategory: Category) => {
+    try {
+      const res = await api.post('/action/add_category', {
+        newCategory
+      });
+
+      if (res.status === 200) {
+        showAlert('Category added successfully!', 'success');
+        setCategoryListKey((k) => k + 1); // trigger refetch
+        return true;
+      }
+    } catch (error) {
+      showAlert('Error adding category. Please try again.', 'error');
+      console.error('Error adding category:', error);
+      return false;
+    }
+
+    return false;
+  }
+
   return (
 
     <div>
       <h1>Products List</h1>
       <div className='flex justify-end items-center mb-6 gap-4'>
-        <Button isDisable={false} icon='Tag' title='Add Category' bg_color='gray' />
+        <Button onClick={() => setOpenAddCategoryModel(true)} isDisable={false} icon='Tag' title='Add Category' bg_color='gray' />
         <Button onClick={() => setOpenAddProductModel(true)} isDisable={false} icon='PlusCircle' title='Add Product' bg_color='blue' />
       </div>
 
@@ -100,6 +124,12 @@ function Products() {
         categories={categories}
         categoriesLoading={isLoadingCategory}
         categoriesError={errorCategory}
+      />
+
+      <AddCategoryModal
+        onOpen={openAddCategoryModel}
+        onClose={() => setOpenAddCategoryModel(false)}
+        onAddNewCategory={handleAddNewCategory}
       />
     </div>
   )
