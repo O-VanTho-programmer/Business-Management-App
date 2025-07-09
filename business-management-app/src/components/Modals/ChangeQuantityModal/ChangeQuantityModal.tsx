@@ -1,9 +1,10 @@
 import { useAlert } from '@/components/AlertProvider/AlertContext';
+import ButtonIcon from '@/components/ButtonIcon/ButtonIcon';
 import { X } from 'lucide-react';
 import React, { useState } from 'react'
 
 type Props = {
-  type: 'all' | 'low-stock' | 'order_placement' | 'sell',
+  type: 'all' | 'low-stock' | 'order_placement' | 'sell' | 'product_list',
   product: Product | null,
   onOpen: boolean,
   onClose: () => void,
@@ -40,13 +41,7 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
     <div>
       <div className="overlay">
         <div className="bg-white rounded-lg p-6 shadow-xl max-w-sm w-full relative">
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 rounded-full p-1"
-            aria-label="Close modal"
-          >
-            <X size={20} />
-          </button>
+          <ButtonIcon icon='X' onClick={onClose}/>
           <h2 className="text-xl font-bold mb-4 text-gray-800">
             {type === 'sell' ? 'Adjust quantity to Sell' : 'Add Quantity to Order'}
           </h2>

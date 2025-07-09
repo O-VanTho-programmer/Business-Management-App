@@ -49,8 +49,8 @@ function StockTransactions() {
     const handleApplyFilter = () => {
         if (startDate) changeStartDate(startDate, endDate);
         if (endDate) changeEndDate(endDate, startDate);
-        if (selectedType) changeTransType(types[selectedType as keyof typeof types]);
-        if (selectedUserType) changeUserType(userTypes[selectedUserType as keyof typeof userTypes]);
+        if (selectedType) changeTransType(selectedType);
+        if (selectedUserType) changeUserType(selectedUserType);
     };
 
     const handleReset = () => {
@@ -100,13 +100,21 @@ function StockTransactions() {
                 </div>
             </div>
 
-            <div className="mt-5 gap-4 bg-white p-4 rounded-xl shadow-lg flex items-center justify-around">
-                <DateRangePicker startDate={startDate} endDate={endDate} onChange={handleDateChange} />
-                <Selector options={types} selectedType={selectedType} setSelectedType={setSelectedType} />
-                <Selector options={userTypes} selectedType={selectedUserType} setSelectedType={setSelectedUserType} />
-                <SearchBar onSearch={handleSearch} />
-                <Button isDisable={false} title='Reset' icon='RotateCcw' onClick={handleReset} />
-                <Button isDisable={false} title='Apply Filter' bg_color='blue' text_color='text-white' onClick={handleApplyFilter} />
+            <div className="mt-5 bg-white p-4 rounded-xl shadow-lg">
+                <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4 flex-1">
+                        <DateRangePicker startDate={startDate} endDate={endDate} onChange={handleDateChange} />
+                        <Selector options={types} selectedType={selectedType} setSelectedType={setSelectedType} />
+                        <Selector options={userTypes} selectedType={selectedUserType} setSelectedType={setSelectedUserType} />
+                    </div>
+                    <div className="flex flex-col sm:flex-row gap-4 flex-1 items-center">
+                        <div className='w-full'>
+                            <SearchBar onSearch={handleSearch} />
+                        </div>
+                        <Button isDisable={false} title='Reset' icon='RotateCcw' onClick={handleReset} />
+                        <Button isDisable={false} title='Apply Filter' bg_color='blue' onClick={handleApplyFilter} />
+                    </div>
+                </div>
             </div>
 
             <div className='bg-white p-5 rounded-lg mt-5 shadow-lg '>

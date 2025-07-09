@@ -16,7 +16,7 @@ export default function Selector({ options, selectedType, setSelectedType }: Pro
                 className="block w-full px-3 py-2 pr-8 text-sm text-gray-800 bg-white rounded-lg appearance-none outline-none cursor-pointer"
             >
                 {Object.entries(options).map(([option, value]) => (
-                    <option key={value} value={value === 'All Types' ? '' : option}>
+                    <option key={value} value={value}>
                         {option}
                     </option>
                 ))}

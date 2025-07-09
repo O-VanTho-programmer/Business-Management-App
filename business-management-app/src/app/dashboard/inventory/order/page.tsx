@@ -88,7 +88,7 @@ function Order() {
         <div className=''>
             <div className='mt-4 flex justify-between items-center gap-4 w-2/3 pr-4'>
                 <h1>Order Placement</h1>
-                <Button onClick={handlePlaceOrder} text_color='text-white' icon='PackagePlus' bg_color='blue' title='Place Order' isDisable={false} />
+                <Button onClick={handlePlaceOrder} icon='PackagePlus' bg_color='blue' title='Place Order' isDisable={false} />
             </div>
 
             <div className='flex gap-4 max-h-[580px]'>

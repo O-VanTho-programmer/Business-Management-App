@@ -3,18 +3,26 @@
 import React, { useState } from 'react'
 import AlertTag from '../AlertTag/AlertTag'
 import ChangeQuantityModal from '../Modals/ChangeQuantityModal/ChangeQuantityModal';
-import { Trash2 } from 'lucide-react';
+import { Edit, Trash2 } from 'lucide-react';
+import AddProductModal from '../Modals/AddProductModal/AddProductModal';
 
 type Props = {
     products: Product[]
-    type: 'all' | 'low-stock' | 'order_placement' | 'sell',
-    onQuantityChange?: (product_code: string, quantity_change: number) => void
-    onDeleteProduct?: (product_code: string) => void
+    type: 'all' | 'low-stock' | 'order_placement' | 'sell' | 'product_list',
+    onQuantityChange?: (product_code: string, quantity_change: number) => void,
+    onDeleteProduct?: (product_code: string) => void,
+    onEditProduct?: (product_code: string) => void
 }
 
-export default function ProductListTable({ products, type, onQuantityChange, onDeleteProduct }: Props) {
+export default function ProductListTable({ products, type, onQuantityChange, onDeleteProduct, onEditProduct }: Props) {
     const [openModalChangeQuantity, setOpenModalChangeQuantity] = useState<boolean>(false);
+    const [openModalEditProduct, setOpenModalEditProduct] = useState<boolean>(false);
+
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
+    const handleEditProduct = (product: Product) => {
+
+    }
 
     if (products.length === 0) {
         return (
@@ -45,7 +53,10 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                     <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>New</th>
                                 </>
                             )}
+                            {(type === 'product_list') && (
+                                <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Category</th>
 
+                            )}
                             <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>{type === 'order_placement' ? "Added Quantity" : "Quantity"}</th>
 
                             {type === 'all' && (
@@ -64,6 +75,13 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
 
                             {(type === 'order_placement') && (
                                 <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'></th>
+                            )}
+
+                            {(type === 'product_list') && (
+                                <>
+                                    <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Price</th>
+                                    <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>ROP</th>
+                                </>
                             )}
                         </tr>
                     </thead>
@@ -134,6 +152,34 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                         ) : null
                                     )}
 
+                                    {(type === 'product_list' && onDeleteProduct && onEditProduct) && (
+                                        <>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>
+                                                <AlertTag color='blue' icon='Tag' title={product.category ? product.category : ""} />
+                                            </td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>${product.price}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.ROP ? product.ROP : 'Unset'}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                <div className="flex items-center justify-end space-x-2">
+                                                    <button
+                                                        onClick={() => onEditProduct(product.product_code)}
+                                                        className="cursor-pointer text-blue-600 hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-full p-1"
+                                                        title="Edit Product"
+                                                    >
+                                                        <Edit size={18} />
+                                                    </button>
+                                                    <button
+                                                        onClick={() => onDeleteProduct(product.product_code)}
+                                                        className="cursor-pointer text-red-600 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded-full p-1"
+                                                        title="Delete Product"
+                                                    >
+                                                        <Trash2 size={18} />
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </>
+                                    )}
                                 </tr>
                             )
                         })}
@@ -157,6 +203,13 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                 onSaveNewQuantity={onQuantityChange}
                 onClose={() => setOpenModalChangeQuantity(false)}
                 type={type}
+            />
+
+            <AddProductModal
+                product={selectedProduct}
+                onAddNewProduct={handleEditProduct}
+                onClose={() => setOpenModalChangeQuantity}
+                onOpen={openModalEditProduct}
             />
         </div >
     )
