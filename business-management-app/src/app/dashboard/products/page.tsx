@@ -59,8 +59,8 @@ function Products() {
 
   }
 
-  const handleEditProduct = (product_code: string) => {
-
+  const handleEditProduct = async (newProduct: Product) => {
+    return true;
   }
 
   const handleAddNewCategory = async (newCategory: Category) => {
@@ -107,7 +107,13 @@ function Products() {
           </div>
         </div>
         <div className='mt-4'>
-          <ProductListTable products={products} type='product_list' onDeleteProduct={handleDeleteProduct} onEditProduct={handleEditProduct} />
+          <ProductListTable
+            products={products} type='product_list'
+            onDeleteProduct={handleDeleteProduct}
+            onEditProduct={handleEditProduct}
+            categories={categories}
+            categoriesLoading={isLoadingCategory}
+            categoriesError={errorCategory} />
         </div>
       </div>
 
@@ -131,6 +137,8 @@ function Products() {
         onClose={() => setOpenAddCategoryModel(false)}
         onAddNewCategory={handleAddNewCategory}
       />
+
+
     </div>
   )
 }

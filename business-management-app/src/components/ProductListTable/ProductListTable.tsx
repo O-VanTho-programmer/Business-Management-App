@@ -11,18 +11,17 @@ type Props = {
     type: 'all' | 'low-stock' | 'order_placement' | 'sell' | 'product_list',
     onQuantityChange?: (product_code: string, quantity_change: number) => void,
     onDeleteProduct?: (product_code: string) => void,
-    onEditProduct?: (product_code: string) => void
+    onEditProduct?: (newProduct: Product) => Promise<boolean>;
+    categories? : Category[];
+    categoriesLoading?: boolean,
+    categoriesError?: any,
 }
 
-export default function ProductListTable({ products, type, onQuantityChange, onDeleteProduct, onEditProduct }: Props) {
+export default function ProductListTable({ products, type, onQuantityChange, onDeleteProduct, onEditProduct, categories, categoriesError, categoriesLoading }: Props) {
     const [openModalChangeQuantity, setOpenModalChangeQuantity] = useState<boolean>(false);
     const [openModalEditProduct, setOpenModalEditProduct] = useState<boolean>(false);
 
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-
-    const handleEditProduct = (product: Product) => {
-
-    }
 
     if (products.length === 0) {
         return (
@@ -163,7 +162,10 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div className="flex items-center justify-end space-x-2">
                                                     <button
-                                                        onClick={() => onEditProduct(product.product_code)}
+                                                        onClick={() => {
+                                                            setSelectedProduct(product);
+                                                            setOpenModalEditProduct(true);
+                                                        }}
                                                         className="cursor-pointer text-blue-600 hover:text-blue-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 rounded-full p-1"
                                                         title="Edit Product"
                                                     >
@@ -201,16 +203,21 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                 product={selectedProduct}
                 onOpen={openModalChangeQuantity}
                 onSaveNewQuantity={onQuantityChange}
-                onClose={() => setOpenModalChangeQuantity(false)}
+                onClose={() => { setSelectedProduct(null); setOpenModalChangeQuantity(false) }}
                 type={type}
             />
 
-            <AddProductModal
-                product={selectedProduct}
-                onAddNewProduct={handleEditProduct}
-                onClose={() => setOpenModalChangeQuantity}
-                onOpen={openModalEditProduct}
-            />
+            {openModalEditProduct && selectedProduct && onEditProduct && (
+                <AddProductModal
+                    categories={categories}
+                    categoriesError={categoriesError}
+                    categoriesLoading={categoriesLoading}
+                    product={selectedProduct}
+                    onAddNewProduct={onEditProduct}
+                    onOpen={true}
+                    onClose={() => { setSelectedProduct(null); setOpenModalEditProduct(false); }}
+                />
+            )}
         </div >
     )
 }

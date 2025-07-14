@@ -15,8 +15,8 @@ type Props = {
     categoriesError?: any,
 }
 
-export default function AddProductModal({ product, onOpen, onClose, onAddNewProduct, categories, categoriesError, categoriesLoading }: Props) {
 
+export default function AddProductModal({ product, onOpen, onClose, onAddNewProduct, categories, categoriesError, categoriesLoading }: Props) {
     const { showAlert } = useAlert();
 
     let localCategories = categories;
@@ -30,14 +30,22 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
         localCategoriesLoading = loading;
     }
 
-    const [productName, setProductName] = useState('');
-    const [productCode, setProductCode] = useState('');
-    const [quantity, setQuantity] = useState<number | ''>('');
-    const [unit, setUnit] = useState('');
-    const [price, setPrice] = useState<number | ''>('');
-    const [cost, setCost] = useState<number | ''>('');
-    const [rop, setRop] = useState<number | ''>('');
-    const [category, setCategory] = useState('');
+    const getCategoryIdFromName = (categoryName: string | undefined) => {
+        console.log(product)
+        console.log(localCategories);
+        if (!categoryName || !localCategories) return '';
+        const found = localCategories.find((cat: Category) => cat.category_name === categoryName);
+        return found ? found.category_id : '';
+    };
+
+    const [productName, setProductName] = useState(product?.product_name || '');
+    const [productCode, setProductCode] = useState(product?.product_code || '');
+    const [quantity, setQuantity] = useState<number | ''>(product?.quantity || '');
+    const [unit, setUnit] = useState<string | ''>(product?.unit || '');
+    const [price, setPrice] = useState<number | ''>(product?.price || '');
+    const [cost, setCost] = useState<number | ''>(product?.cost || '');
+    const [rop, setRop] = useState<number | ''>(product?.ROP || '');
+    const [category, setCategory] = useState(() => product ? getCategoryIdFromName(product.category) : '');
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const resetInputFields = () => {
@@ -112,7 +120,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                 value={productName}
                                 onChange={(e) => setProductName(e.target.value)}
                                 placeholder="e.g., Organic Apples"
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className={`w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${product && product?.product_name !== productName ? "bg-blue-100 border-blue-400!" : ""}`}
                                 required
                             />
                         </div>
@@ -131,7 +139,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                 value={productCode}
                                 onChange={(e) => setProductCode(e.target.value)}
                                 placeholder="e.g., P001 (auto-generated if empty)"
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className={`w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${product && product?.product_name !== productName ? "bg-blue-100 border-blue-400!" : ""}`}
                             />
                         </div>
                     </div>
@@ -150,7 +158,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                 onChange={(e) => setQuantity(e.target.value === '' ? '' : parseInt(e.target.value))}
                                 placeholder="e.g., 100"
                                 min="0"
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className={`w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${product && quantity !== '' && product?.quantity !== quantity ? "bg-blue-100 border-blue-400!" : ""}`}
                                 required
                             />
                         </div>
@@ -169,7 +177,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                 value={unit}
                                 onChange={(e) => setUnit(e.target.value)}
                                 placeholder="e.g., pcs, kg, bags"
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className={`w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${product && product?.unit !== unit ? "bg-blue-100 border-blue-400!" : ""}`}
                                 required
                             />
                         </div>
@@ -190,7 +198,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                 placeholder="e.g., 1.50"
                                 min="0"
                                 step="0.01"
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className={`w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${product && product?.price !== price ? "bg-blue-100 border-blue-400!" : ""}`}
                                 required
                             />
                         </div>
@@ -211,7 +219,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                 placeholder="e.g., 0.80"
                                 min="0"
                                 step="0.01"
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className={`w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${product && product?.cost !== cost ? "bg-blue-100 border-blue-400!" : ""}`}
                                 required
                             />
                         </div>
@@ -231,7 +239,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                 onChange={(e) => setRop(e.target.value === '' ? '' : parseInt(e.target.value))}
                                 placeholder="e.g., 50"
                                 min="0"
-                                className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
+                                className={`w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${product && product?.ROP !== rop ? "bg-blue-100 border-blue-400!" : ""}`}
                             />
                         </div>
                     </div>
@@ -263,7 +271,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
                                     id="category"
                                     value={category}
                                     onChange={(e) => setCategory(e.target.value)}
-                                    className="block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white cursor-pointer"
+                                    className={`block w-full pl-10 pr-8 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 appearance-none bg-white cursor-pointe ${product && product?.category !== category ? "bg-blue-100 border-blue-400!" : ""}`}
                                     required
                                 >
                                     <option value="" hidden>Select a Category</option>
