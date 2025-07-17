@@ -1,11 +1,11 @@
 import React from 'react';
-import { BanknoteArrowDown , AlertTriangle, Award, BanknoteArrowUp, ChartNoAxesCombined, ChevronsDown, CircleSlash2, Layers, PackagePlus, ShoppingBag, TrendingDown, TrendingUp, XCircle, CirclePlus } from 'lucide-react';
+import { BanknoteArrowDown , AlertTriangle, Award, BanknoteArrowUp, ChartNoAxesCombined, ChevronsDown, CircleSlash2, Layers, PackagePlus, ShoppingBag, TrendingDown, TrendingUp, XCircle, CirclePlus, HandCoins } from 'lucide-react';
 
 interface CardProps {
     title: string,
     content?: string,
     description?: string,
-    icon?: 'CirclePlus' | 'BanknoteArrowDown' | 'BanknoteArrowUp' | 'PackagePlus' | 'ChartNoAxesCombined' | 'TrendingUp' | 'TrendingDown' | 'Layers' | 'ChevronsDown' | 'CircleSlash2' | 'ShoppingBag' | 'AlertTriangle' | 'Award' | 'XCircle';
+    icon?: 'HandCoins' | 'CirclePlus' | 'BanknoteArrowDown' | 'BanknoteArrowUp' | 'PackagePlus' | 'ChartNoAxesCombined' | 'TrendingUp' | 'TrendingDown' | 'Layers' | 'ChevronsDown' | 'CircleSlash2' | 'ShoppingBag' | 'AlertTriangle' | 'Award' | 'XCircle';
     iconColor?: string,
 }
 
@@ -17,7 +17,7 @@ const Card: React.FC<CardProps> = ({
     iconColor = 'text-yellow-500'
 }) => {
     const IconComponent = icon ? {
-        CirclePlus, BanknoteArrowDown, BanknoteArrowUp, PackagePlus, ChartNoAxesCombined, TrendingDown, TrendingUp, Layers, ChevronsDown, CircleSlash2, ShoppingBag, AlertTriangle, Award, XCircle
+        HandCoins, CirclePlus, BanknoteArrowDown, BanknoteArrowUp, PackagePlus, ChartNoAxesCombined, TrendingDown, TrendingUp, Layers, ChevronsDown, CircleSlash2, ShoppingBag, AlertTriangle, Award, XCircle
     }[icon] : null
 
     return (

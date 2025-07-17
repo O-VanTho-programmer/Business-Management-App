@@ -76,10 +76,6 @@ function Order() {
 
     const { data: orderHistory } = useFetchList("orders");
 
-    useEffect(() => {
-        console.log(orderHistory);
-    }, [orderHistory])
-
     if (loading) {
         return <Loading state='loading' />;
     }
@@ -88,7 +84,20 @@ function Order() {
         <div className=''>
             <div className='mt-4 flex justify-between items-center gap-4 w-2/3 pr-4'>
                 <h1>Order Placement</h1>
-                <Button onClick={handlePlaceOrder} icon='PackagePlus' bg_color='blue' title='Place Order' isDisable={false} />
+
+                <div className='flex gap-2'>
+                    <button onClick={() => window.location.href = '/dashboard/invoice_scanner'} type="button"
+                        className="relative overflow-hidden flex whitespace-nowrap items-center py-2 px-4 shadow-sm gap-2 rounded-lg
+                    transition-all duration-300 ease-in-out transform cursor-pointer
+                    focus:outline-none focus:ring-2 focus:ring-offset-2
+                    font-semibold bg-white text-gray-800 border border-gray-300 hover:scale-105 hover:shadow-lg
+                    hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-red-500 hover:text-white focus:ring-blue-500">
+                        Scan Invoice
+                        <span className="absolute text-white top-0 right-0 px-4 py-1 text-xs tracking-wider text-center uppercase whitespace-no-wrap origin-bottom-left transform rotate-45 -translate-y-full translate-x-1/3 dark:bg-violet-600">New</span>
+                    </button>
+
+                    <Button onClick={handlePlaceOrder} icon='PackagePlus' bg_color='blue' title='Place Order' isDisable={false} />
+                </div>
             </div>
 
             <div className='flex gap-4 max-h-[580px]'>
@@ -105,7 +114,8 @@ function Order() {
 
             {/* Order History Section */}
             <SaleTransactionHistory type='order' trans={orderHistory || []} />
-        </div>
+
+        </div >
     )
 }
 

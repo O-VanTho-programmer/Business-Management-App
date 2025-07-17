@@ -56,7 +56,7 @@ function SaleProduct() {
                         <label>Customer:</label>
                         <input value={customerName} onChange={(e) => setCustomerName(e.target.value)} type="text" className='border-b outline-none border-gray-500 w-full' />
                     </div>
-                    <Button icon='ShoppingBasket' onClick={handleSell} isDisable={false} title='Add Sale' bg_color='blue' text_color='text-white' />
+                    <Button icon='ShoppingBasket' onClick={handleSell} isDisable={false} title='Add Sale' bg_color='blue'/>
                 </div>
                 <div className='flex gap-2 mb-8 items-center justify-between'>
                     <label className='text-2xl font-semibold'>Products</label>

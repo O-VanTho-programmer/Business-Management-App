@@ -17,7 +17,7 @@ function TableRevenueTransaction({ transactions }: Props) {
               <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Price Unit</th>
               <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Quantity</th>
               <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Total Price</th>
-              <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>User</th>
+              <th className='py-3 px-6 text-left text-xs text-gray-500 tracking-wider font-bold'>Customer</th>
             </tr>
           </thead>
 
@@ -33,8 +33,8 @@ function TableRevenueTransaction({ transactions }: Props) {
                   </td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.price_unit}</td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.quantity}</td>
-                  <td className={`py-4 px-6 whitespace-nowrap text-sm ${trans.type === 'ORDER' ? 'text-green-600' : 'text-red-500'}`}>{trans.total_price} ${trans.type === 'ORDER' ? <TrendingUp /> : <TrendingDown />}</td>
-                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.user_code}</td>
+                  <td className={`py-4 px-6 whitespace-nowrap text-sm font-medium ${trans.type === 'SELL' ? 'text-green-600' : 'text-red-500'}`}>{trans.total_price} ${trans.type === 'SELL' ? <TrendingUp /> : <TrendingDown />}</td>
+                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.customer}</td>
                 </tr>
               )
             })}

@@ -22,4 +22,5 @@ interface RevenueTransaction{
     total_price: number,
     type: 'ORDER' | 'SELL',
     user: string,
+    customer?: string,
 }

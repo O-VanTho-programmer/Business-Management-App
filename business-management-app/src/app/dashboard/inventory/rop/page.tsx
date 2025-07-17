@@ -60,7 +60,7 @@ function ROP() {
                     <Button onClick={resetChangeROP} isDisable={!isPendingChanged} icon='RotateCcw' title='Reset Changes' bg_color='gray' />
 
                 )}
-                <Button onClick={saveChangeROP} isDisable={!isPendingChanged} icon='Save' title='Save Changes' text_color='text-white' bg_color='blue' />
+                <Button onClick={saveChangeROP} isDisable={!isPendingChanged} icon='Save' title='Save Changes' bg_color='blue' />
             </div>
 
             {loading ? (
