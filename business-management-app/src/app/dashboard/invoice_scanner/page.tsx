@@ -68,10 +68,10 @@ export default function InvoiceScannerPage() {
         responseText = responseText.replace(/```json|```/g, '').trim();
       }
 
+      console.log(responseText)
+
       setResultJson(responseText);
       const parsedInvoice = JSON.parse(responseText);
-
-      console.log(responseText)
 
       // Perform a simple transformation for numerical fields if they come as strings with dots
       const transformedItems = parsedInvoice.items.map((item: any) => ({

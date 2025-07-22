@@ -8,30 +8,21 @@ export default function useRevenueTransactionSummary(query: string) {
     const [topProductName, setTopProductName] = useState<string>("Unknown");
     const [topProductTotalQuantitySold, setProductTotalQuantitySold] = useState<string>("Unknown");
 
-    const reset = () => {
-        setTotalProfit("N/A")
-        setTotalCost("N/A")
-        setRevenue("N/A")
-        setTopProductName("Unknown")
-        setProductTotalQuantitySold("Unknown")
-    }
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 const res = await api.get(`/revenue_transaction_summary?${query}`);
 
-                setTotalProfit(res.data.total_profit);
-                setTotalCost(res.data.order_cost);
-                setRevenue(res.data.revenue);
-                setTopProductName(res.data.top_product.product_name);
-                setProductTotalQuantitySold(res.data.top_product.total_quantity_sold)
+                setTotalProfit(res.data.total_profit || '0');
+                setTotalCost(res.data.order_cost || '0');
+                setRevenue(res.data.revenue || '0');
+                setTopProductName(res.data.top_product.product_name || 'Unknown');
+                setProductTotalQuantitySold(res.data.top_product.total_quantity_sold || '0')
             } catch (error) {
                 console.log("Error", error);
             }
         }
 
-        reset();
         fetchData();
     }, [query])
 

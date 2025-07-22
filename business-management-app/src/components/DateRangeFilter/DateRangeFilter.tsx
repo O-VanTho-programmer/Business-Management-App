@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 import { Calendar } from 'lucide-react';
 
 interface DateFilterProps {
-    onDateRangeSelect?: (range: 'today' | 'this_week' | 'this_month' | 'this_year') => void;
-    initialActiveRange?: 'today' | 'this_week' | 'this_month' | 'this_year';
+    onDateRangeSelect?: (range: 'today' | 'this_week' | 'this_month' | 'this_year' | 'custom') => void;
+    initialActiveRange?: 'today' | 'this_week' | 'this_month' | 'this_year' | 'custom';
+    activeRange: 'today' | 'this_week' | 'this_month' | 'this_year' | 'custom';
 }
 
-export default function DateRangeFilter({ onDateRangeSelect, initialActiveRange = 'this_month' }: DateFilterProps) {
-    const [activeRange, setActiveRange] = useState(initialActiveRange);
+export default function DateRangeFilter({ onDateRangeSelect, activeRange }: DateFilterProps) {
 
     const handleRangeClick = (range: typeof activeRange) => {
-        setActiveRange(range);
         if (onDateRangeSelect) {
             onDateRangeSelect(range);
         }

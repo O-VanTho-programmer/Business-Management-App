@@ -24,7 +24,7 @@ export async function GET(req: Request) {
 
         if(startDate && endDate){
             query += `
-                WHERE st.trans_date >= '${startDate}' AND st.trans_date <= '${endDate}'
+                WHERE st.trans_date > '${startDate}' AND st.trans_date <= '${endDate}'
             `;
         }
 

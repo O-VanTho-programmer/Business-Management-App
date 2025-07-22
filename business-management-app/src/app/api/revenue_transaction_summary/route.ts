@@ -6,20 +6,25 @@ export async function GET(req: Request) {
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
 
+    if(!startDate || !endDate){
+        return NextResponse.json({status: 201});
+    }
+
     try {
         const [[orderCostResult]] = await pool.query(`
             SELECT COALESCE(SUM(total_amount), 0) as total_order_cost
             FROM sale_transaction
-            WHERE type = 'ORDER'
+            WHERE type = 'ORDER'AND trans_date > '${startDate}' AND trans_date <= '${endDate}'
         `) as any[];
 
         const [[revenueResult]] = await pool.query(`
             SELECT COALESCE(SUM(total_amount), 0) as total_revenue
             FROM sale_transaction
-            WHERE type = 'SELL'
+            WHERE type = 'SELL' AND trans_date >= '${startDate}' AND trans_date <= '${endDate}'
         `) as any[];
 
-        const totalProfit = revenueResult.total_revenue - orderCostResult.total_order_cost;
+        const totalProfitValue = revenueResult.total_revenue - orderCostResult.total_order_cost;
+        const totalProfit = `${totalProfitValue.toFixed(2)}`;
 
         const queryTopSoldProduct = `
             SELECT 

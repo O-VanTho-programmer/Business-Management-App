@@ -1,7 +1,8 @@
 'use client'
 import Card from '@/components/Card/Card'
-import ChartView from '@/components/ChartView/ChartView'
 import DateRangeFilter from '@/components/DateRangeFilter/DateRangeFilter'
+import MonthYearFilter from '@/components/MonthYearFilter/MonthYearFilter'
+import SalesLineChart from '@/components/SalesLineChart/SalesLineChart'
 import TableRevenueTransaction from '@/components/TableRevenueTransaction/TableRevenueTransaction'
 import useFetchList from '@/hooks/useFetchList'
 import useInventoryQuery from '@/hooks/useInventoryQuery'
@@ -11,18 +12,23 @@ import React, { useEffect, useState } from 'react'
 
 function SaleReport() {
     const [view, setView] = useState<"table" | "chart">("table");
+    const [isCustomedDate, setIsCustomedDate] = useState<boolean>(false);
+
 
     const { query, changeStartDate, changeEndDate, displayDateRange } = useInventoryQuery();
     const { data: transactions } = useFetchList('revenue_transactions', query);
+    const {data: saleDataChart} = useFetchList('sale_data_chart', query);
+
     const { totalProfit, totalCost, revenue, topProductName, topProductTotalQuantitySold } = useRevenueTransactionSummary(query);
 
-    const INITIAL_DATE_RANGE = 'this_month';
+    const [activeRange, setActiveRange] = useState<'today' | 'this_week' | 'this_month' | 'this_year' | 'custom'>('this_month');
 
-    const handleChangeDateRange = (range: 'today' | 'this_week' | 'this_month' | 'this_year') => {
+    const handleChangeDateRange = (range: 'today' | 'this_week' | 'this_month' | 'this_year' | 'custom') => {
         const today = new Date();
         let start: Date;
         let end: Date;
 
+        setActiveRange(range);
         switch (range) {
             case 'today':
                 start = new Date(today.setHours(0, 0, 0, 0));
@@ -50,20 +56,37 @@ function SaleReport() {
                 return;
         }
 
+        setIsCustomedDate(false);
+
         changeStartDate(start, end);
         changeEndDate(end, start);
     }
 
     useEffect(() => {
-        handleChangeDateRange(INITIAL_DATE_RANGE);
+        handleChangeDateRange(activeRange);
     }, []);
 
+    const handleFilterChange = (month: number | null, year: number | null) => {
+
+        if (!month || !year) {
+            return;
+        }
+
+        let start = new Date(year, month - 1, 1, 0, 0, 0, 0);
+        let end = new Date(year, month, 0, 23, 59, 59, 999);
+
+        changeStartDate(start, end);
+        changeEndDate(end, start);
+    };
 
     return (
-        <div>
+        <div className='pb-24'>
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between py-4">
                 <h1>Revenue Transactions Overview</h1>
-                <DateRangeFilter initialActiveRange={INITIAL_DATE_RANGE} onDateRangeSelect={handleChangeDateRange} />
+                <DateRangeFilter
+                    activeRange={activeRange}
+                    onDateRangeSelect={handleChangeDateRange}
+                />
             </div>
 
             <div className='text-gray-600 font-medium mb-3'>
@@ -71,25 +94,40 @@ function SaleReport() {
                 <span className="font-semibold">{displayDateRange}</span>
             </div>
 
-            <div className='flex gap-4'>
+            <div className='flex gap-4 mb-5'>
                 <Card title='Total Profit'
                     content={`$${totalProfit}`}
                     icon='HandCoins'
-                    iconColor='text-green-500' />
+                    iconColor='text-blue-500'
+                    text_color='text-blue-600' />
                 <Card title='Order Cost'
                     content={`$${totalCost}`}
                     icon='BanknoteArrowDown'
-                    iconColor='text-red-500' />
+                    iconColor='text-red-500'
+                    text_color='text-red-600' />
                 <Card title='Revenue'
                     content={`$${revenue}`}
                     icon='BanknoteArrowUp'
-                    iconColor='text-blue-500' />
+                    iconColor='text-green-500'
+                    text_color='text-green-600' />
                 <Card title='Top Product'
                     content={topProductName}
                     description={`${topProductTotalQuantitySold} sold`}
                     icon='Award'
                     iconColor='text-yellow-500' />
             </div>
+
+            <MonthYearFilter
+                onFilterChange={handleFilterChange}
+                isOn={isCustomedDate} onToggle={() => {
+                    setIsCustomedDate(!isCustomedDate);
+                    if (!isCustomedDate) {
+                        handleChangeDateRange('custom')
+                    } else {
+                        handleChangeDateRange('this_month')
+                    }
+                }}
+            />
 
             <div className='bg-white p-5 rounded-lg mt-5 shadow-lg flex flex-col items-center'>
                 <div className="flex bg-gray-200 rounded-xl p-1 mb-6 shadow-sm gap-1">
@@ -112,7 +150,7 @@ function SaleReport() {
                     <TableRevenueTransaction transactions={transactions} />
 
                 ) : (
-                    <ChartView />
+                    <SalesLineChart chartData={saleDataChart} />
                 )}
             </div>
         </div>

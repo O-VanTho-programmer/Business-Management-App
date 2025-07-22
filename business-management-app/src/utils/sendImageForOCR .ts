@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = "https://2cb4ee45a658.ngrok-free.app";
+const API_BASE_URL = "https://d678c7221be6.ngrok-free.app";
 
 export const sendImageForOCR = async (imageFile: File) => {
     const formData = new FormData();
