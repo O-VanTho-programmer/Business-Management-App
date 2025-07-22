@@ -1,7 +1,8 @@
+import formatCurrency from '@/utils/formatCurrency';
 import React from 'react';
 
 // Define interfaces for the invoice data structure
-interface InvoiceItem {
+export interface InvoiceItem {
   product_name: string;
   quantity: number;
   unit_price: number;
@@ -28,17 +29,6 @@ interface InvoiceDisplayFormProps {
 }
 
 export default function InvoiceDisplayForm({ invoice }: InvoiceDisplayFormProps) {
-
-  const formatCurrency = (amount: number | string) => {
-
-    const numAmount = typeof amount === 'string' ? parseFloat(amount.replace(/\./g, '')) : amount;
-    return new Intl.NumberFormat('vi-VN', { // Using Vietnamese locale for currency format
-      style: 'currency',
-      currency: 'VND',
-      minimumFractionDigits: 0, 
-      maximumFractionDigits: 0, 
-    }).format(numAmount);
-  };
 
   return (
     <div className="bg-gray-100 p-4 sm:p-6 lg:p-8 min-h-screen font-sans">

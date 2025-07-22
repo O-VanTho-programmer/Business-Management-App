@@ -1,6 +1,9 @@
 'use client'
-import InvoiceDisplayForm, { InvoiceData } from '@/components/InvoiceDisplayForm/InvoiceDisplayForm';
+import InvoiceDisplayForm, { InvoiceData, InvoiceItem } from '@/components/InvoiceDisplayForm/InvoiceDisplayForm';
+import AddScannedInvoiceModal from '@/components/Modals/AddScannedInvoiceModal/AddScannedInvoiceModal';
+import api from '@/lib/axios';
 import { sendImageForOCR } from '@/utils/sendImageForOCR ';
+import { ShoppingBag } from 'lucide-react';
 import React, { useState } from 'react'
 
 export default function InvoiceScannerPage() {
@@ -41,7 +44,7 @@ export default function InvoiceScannerPage() {
     ],
     "subtotal": "25.200.000",
     "vat": null,
-    "total_amount": "25.200.000",
+    "total_amount": "89.800.000",
   };
 
   const [file, setFile] = useState<File | null>(null);
@@ -49,6 +52,8 @@ export default function InvoiceScannerPage() {
   const [resultJson, setResultJson] = useState('');
   const [loading, setLoading] = useState(false);
   const [showRawJson, setShowRawJson] = useState(false);
+
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState<boolean>(false);
 
   const handleSubmit = async () => {
     if (!file) return;
@@ -67,8 +72,6 @@ export default function InvoiceScannerPage() {
       if (responseText.startsWith('```json') || responseText.startsWith('```')) {
         responseText = responseText.replace(/```json|```/g, '').trim();
       }
-
-      console.log(responseText)
 
       setResultJson(responseText);
       const parsedInvoice = JSON.parse(responseText);
@@ -104,13 +107,27 @@ export default function InvoiceScannerPage() {
         "subtotal": "0",
         "vat": null,
         "total_amount": null,
-        
       };
-      setResultData(errorSampleInvoiceData);
+
+      setResultData(sampleInvoiceData);
     } finally {
       setLoading(false);
     }
   };
+
+  const handleAddScannedProduct = async (items: InvoiceItem[]) => {
+    try {
+      const res = await api.post('/action/place_order_from_scanned_invoice', {
+        items
+      })
+
+      if(res.status === 200){
+        console.log("Success");
+      }
+    } catch (error) {
+      console.log("Error add scanned products", error);
+    }
+  }
 
   return (
     <div className="min-h-screen p-4 sm:p-6 lg:p-8 font-sans flex flex-col items-center">
@@ -146,22 +163,34 @@ export default function InvoiceScannerPage() {
         </button>
 
         {/* Toggle Buttons for View */}
-        {(resultJson || resultData) && ( // Only show toggle if there's data to display
-          <div className="flex bg-gray-200 rounded-xl p-1 mt-6 mb-4 shadow-sm justify-center">
-            <button
-              onClick={() => setShowRawJson(false)}
-              className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200
-                ${!showRawJson ? 'bg-white text-gray-900 shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
-            >
-              Formatted Invoice
-            </button>
-            <button
-              onClick={() => setShowRawJson(true)}
-              className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200
-                ${showRawJson ? 'bg-white text-gray-900 shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
-            >
-              Raw JSON
-            </button>
+        {(resultJson || resultData) && (
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mt-6">
+            <div className="flex bg-gray-200 rounded-xl p-1 shadow-sm flex-grow">
+              <button
+                onClick={() => setShowRawJson(false)}
+                className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200
+                  ${!showRawJson ? 'bg-white text-gray-900 shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Formatted Invoice
+              </button>
+              <button
+                onClick={() => setShowRawJson(true)}
+                className={`flex-1 px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200
+                  ${showRawJson ? 'bg-white text-gray-900 shadow-md' : 'text-gray-600 hover:bg-gray-100'}`}
+              >
+                Raw JSON
+              </button>
+            </div>
+            {resultData && resultData.items.length > 0 && (
+              <button
+                onClick={() => setIsOrderModalOpen(true)}
+                className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg shadow-md
+                           hover:bg-green-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+              >
+                <ShoppingBag size={18} className="mr-2" />
+                Add to Order
+              </button>
+            )}
           </div>
         )}
 
@@ -183,6 +212,16 @@ export default function InvoiceScannerPage() {
           </div>
         )}
       </div>
+
+      {resultData && (
+        <AddScannedInvoiceModal
+          isOpen={isOrderModalOpen}
+          onClose={() => setIsOrderModalOpen(false)}
+          invoiceItems={resultData.items}
+          onAddScannedProducts={handleAddScannedProduct}
+          title='Order'
+        />
+      )}
     </div>
   );
 };
