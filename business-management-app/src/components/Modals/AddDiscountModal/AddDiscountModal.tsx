@@ -33,8 +33,9 @@ export default function AddDiscountModal({ discount, isSaving, isOpen, onSave, o
   const formatDateForInput = (dateString?: string) => {
     if (!dateString) return '';
 
-    const date = new Date(dateString);
-    return date.toISOString().slice(0, 10);
+    //convert into YYYY-MM-DD format
+    const [day, month, year] = dateString.split('/');
+    return `${year}-${month.padStart(2,'0')}-${day.padStart(2, '0')}`;
   };
 
   const formatTimeForInput = (timeString?: string) => {
