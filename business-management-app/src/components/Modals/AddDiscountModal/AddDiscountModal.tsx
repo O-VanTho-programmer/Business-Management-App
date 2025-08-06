@@ -103,7 +103,15 @@ export default function AddDiscountModal({ discount, isSaving, isOpen, onSave, o
   }
 
   const handleAddCategory = (category: Category) => {
-    setSelectedCategories(prev => [...prev, category]);
+    setSelectedCategories(prev => {
+      let existIndex = prev.find(c => c.category_id === category.category_id);
+      
+      if(existIndex){
+        return prev.filter(cat => cat.category_id !== category.category_id);
+      }
+
+      return [...prev, category];
+    });
   }
 
   const handleRemoveCategory = (categoryId: string | undefined) => {

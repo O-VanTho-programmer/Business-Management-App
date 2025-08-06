@@ -4,6 +4,7 @@ import SearchBar from '../SearchBar/SearchBar'
 import useFetchList from '@/hooks/useFetchList'
 import useProductQuery from '@/hooks/useProductQuery'
 import Loading from '../Loading/Loading'
+import { useAlert } from '../AlertProvider/AlertContext'
 
 type Props = {
   onClose: () => void,
@@ -12,11 +13,17 @@ type Props = {
 }
 
 export default function AddSaleProductPopup({ onClose, selectedProducts, setSelectedProducts }: Props) {
+  const { showAlert } = useAlert();
 
   const { query, changeSearchVal } = useProductQuery();
   const { data: products, error, loading } = useFetchList('products', query);
 
   const addProduct = (product: Product) => {
+    if(product.quantity <= 0){
+      showAlert("The product is out of stock!! Cannot be selected", 'warning');
+      return;
+    }
+
     setSelectedProducts(prev => {
       let existIndex = prev.findIndex(p => p.product_id === product.product_id);
 

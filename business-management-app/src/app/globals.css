@@ -9,7 +9,7 @@
 }
 
 :root {
-  --background: linear-gradient(45deg, rgb(243, 244, 244) 36%, rgb(254, 254, 255) 100%);
+  --background: linear-gradient(to bottom right, rgb(248 250 252), rgb(239 246 255));
   --foreground: #171717;
   --description-clr: #8f9496;
 }
@@ -27,7 +27,10 @@ body {
   padding-left: 250px;
   padding-right: 250px;
   max-width: 100%;
-  background-color: var(--background);
+}
+
+.bg_slate_blue{
+  background: var(--background);
 }
 
 h1 {
