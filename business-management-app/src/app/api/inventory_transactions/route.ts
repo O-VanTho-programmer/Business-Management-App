@@ -45,7 +45,7 @@ export async function GET(req: Request) {
                 it.previous_quantity,
                 it.new_quantity,
                 it.trans_id as transaction_id,
-                p.product_id as product_code,
+                p.product_id as product_id,
                 p.product_name,
                 p.unit,
                 u.username as user

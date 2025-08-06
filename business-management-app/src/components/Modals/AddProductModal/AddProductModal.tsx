@@ -39,7 +39,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
     };
 
     const [productName, setProductName] = useState(product?.product_name || '');
-    const [productCode, setProductCode] = useState(product?.product_code || '');
+    const [productCode, setProductCode] = useState(product?.product_id || '');
     const [quantity, setQuantity] = useState<number | ''>(product?.quantity || '');
     const [unit, setUnit] = useState<string | ''>(product?.unit || '');
     const [price, setPrice] = useState<number | ''>(product?.price || '');
@@ -68,7 +68,7 @@ export default function AddProductModal({ product, onOpen, onClose, onAddNewProd
         setIsSubmitting(true);
 
         const newProduct: Product = {
-            product_code: productCode,
+            product_id: productCode,
             product_name: productName,
             quantity: quantity as number,
             unit: unit,

@@ -11,8 +11,8 @@ export async function POST(res: Response){
             SET ROP = ?, update_date = NOW()
             WHERE product_id = ?
         `
-        for(const [product_code, newROP] of Object.entries(productCodeAndNewROP)){
-            await pool.query(query, [newROP, product_code])
+        for(const [product_id, newROP] of Object.entries(productCodeAndNewROP)){
+            await pool.query(query, [newROP, product_id])
         }
 
         return NextResponse.json({status: 200})

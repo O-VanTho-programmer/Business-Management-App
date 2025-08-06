@@ -76,7 +76,7 @@ export async function GET(req: Request) {
             }))
 
             discount.products = productsRows.map(row => ({
-                product_code: row.product_id,
+                product_id: row.product_id,
                 product_name: row.product_name,
                 quantity: row.quantity_in_stock,
                 unit: row.unit,

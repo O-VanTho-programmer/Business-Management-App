@@ -55,7 +55,7 @@ function Products() {
     return false;
   }
 
-  const handleDeleteProduct = (product_code: string) => {
+  const handleDeleteProduct = (product_id: string) => {
 
   }
 

@@ -10,8 +10,8 @@ import formatCurrency from '@/utils/formatCurrency';
 type Props = {
     products: Product[]
     type: 'all' | 'low-stock' | 'order_placement' | 'sell' | 'product_list',
-    onQuantityChange?: (product_code: string, quantity_change: number) => void,
-    onDeleteProduct?: (product_code: string) => void,
+    onQuantityChange?: (product_id: string, quantity_change: number) => void,
+    onDeleteProduct?: (product_id: string) => void,
     onEditProduct?: (newProduct: Product) => Promise<boolean>;
     categories? : Category[];
     categoriesLoading?: boolean,
@@ -90,8 +90,8 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                         {products.map((product) => {
 
                             return (
-                                <tr key={product.product_code} className='h-[50px]'>
-                                    <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.product_code}</td>
+                                <tr key={product.product_id} className='h-[50px]'>
+                                    <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.product_id}</td>
                                     <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.product_name}</td>
                                     {type === 'order_placement' && product.quantity_change && (
                                         <>
@@ -108,7 +108,7 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                             <td className='py-4 px-6 whitespace-nowrap text-sm'>
                                                 <div className="flex items-center justify-end space-x-2">
                                                     <button
-                                                        onClick={() => onDeleteProduct?.(product.product_code)}
+                                                        onClick={() => onDeleteProduct?.(product.product_id)}
                                                         className="cursor-pointer text-red-600 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded-full p-1"
                                                         title="Delete Product"
                                                     >
@@ -173,7 +173,7 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                                         <Edit size={18} />
                                                     </button>
                                                     <button
-                                                        onClick={() => onDeleteProduct(product.product_code)}
+                                                        onClick={() => onDeleteProduct(product.product_id)}
                                                         className="cursor-pointer text-red-600 hover:text-red-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 rounded-full p-1"
                                                         title="Delete Product"
                                                     >

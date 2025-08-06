@@ -112,7 +112,7 @@ export default function AddDiscountModal({ discount, isSaving, isOpen, onSave, o
   }
 
   const handleToggleProduct = (product: Product) => {
-    setSelectedProducts(prev => prev.includes(product) ? prev.filter(p => p.product_code !== product.product_code) : [...prev, product]);
+    setSelectedProducts(prev => prev.includes(product) ? prev.filter(p => p.product_id !== product.product_id) : [...prev, product]);
   }
 
   return (
@@ -333,10 +333,10 @@ export default function AddDiscountModal({ discount, isSaving, isOpen, onSave, o
                   {isProductDropdownOpen && (
                     <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto">
                       {allProducts.map((product: Product) => {
-                        const isSelected = selectedProducts.some(p => p.product_code === product.product_code);
+                        const isSelected = selectedProducts.some(p => p.product_id === product.product_id);
                         return (
                           <div
-                            key={product.product_code}
+                            key={product.product_id}
                             className="flex items-center p-3 hover:bg-gray-100 cursor-pointer transition-colors"
                             onClick={() => handleToggleProduct(product)}
                           >

@@ -18,9 +18,9 @@ function SaleProduct() {
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
     const [openPopup, setOpenPopup] = useState<boolean>(false);
 
-    const handleChangeQuantity = (product_code: string, quantity_change: number) => {
+    const handleChangeQuantity = (product_id: string, quantity_change: number) => {
         setSelectedProducts(prev =>
-            prev.map(product => product.product_code === product_code ? { ...product, quantity_change: quantity_change } : product)
+            prev.map(product => product.product_id === product_id ? { ...product, quantity_change: quantity_change } : product)
         )
     }
 

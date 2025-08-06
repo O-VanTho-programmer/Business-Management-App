@@ -18,7 +18,7 @@ export default function AddSaleProductPopup({ onClose, selectedProducts, setSele
 
   const addProduct = (product: Product) => {
     setSelectedProducts(prev => {
-      let existIndex = prev.findIndex(p => p.product_code === product.product_code);
+      let existIndex = prev.findIndex(p => p.product_id === product.product_id);
 
       if (existIndex !== -1) {
         let update = [...prev];

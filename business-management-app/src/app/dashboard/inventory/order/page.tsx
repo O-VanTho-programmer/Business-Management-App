@@ -24,7 +24,7 @@ function Order() {
 
     const handleAddProduct = (product: Product) => {
         setSelectedProducts(prev => {
-            let existIndex = prev.findIndex(p => p.product_code === product.product_code);
+            let existIndex = prev.findIndex(p => p.product_id === product.product_id);
 
             if (existIndex !== -1) {
                 let updated = [...prev];
@@ -42,14 +42,14 @@ function Order() {
         })
     }
 
-    const handleChangeQuantity = (product_code: string, quantity_change: number) => {
+    const handleChangeQuantity = (product_id: string, quantity_change: number) => {
         setSelectedProducts(prev =>
-            prev.map(product => product.product_code === product_code ? { ...product, quantity_change: quantity_change } : product)
+            prev.map(product => product.product_id === product_id ? { ...product, quantity_change: quantity_change } : product)
         )
     }
 
-    const handleDeleteOrderProduct = (product_code: string) => {
-        setSelectedProducts(prev => prev.filter(p => p.product_code !== product_code));
+    const handleDeleteOrderProduct = (product_id: string) => {
+        setSelectedProducts(prev => prev.filter(p => p.product_id !== product_id));
     }
 
     const handlePlaceOrder = async () => {

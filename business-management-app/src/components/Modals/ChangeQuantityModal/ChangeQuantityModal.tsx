@@ -8,7 +8,7 @@ type Props = {
   product: Product | null,
   onOpen: boolean,
   onClose: () => void,
-  onSaveNewQuantity?: (product_code: string, quantity_change: number) => void
+  onSaveNewQuantity?: (product_id: string, quantity_change: number) => void
 }
 
 export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNewQuantity, type }: Props) {
@@ -27,7 +27,7 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
     }
 
     if (onSaveNewQuantity && product) {
-      onSaveNewQuantity(product.product_code, quantityInput);
+      onSaveNewQuantity(product.product_id, quantityInput);
     }
 
     onClose();
@@ -48,7 +48,7 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
 
           <div className="mb-4">
             <p className="text-gray-700 text-lg font-semibold">{product.product_name}</p>
-            <p className="text-gray-500 text-sm">Product Code: {product.product_code}</p>
+            <p className="text-gray-500 text-sm">Product Code: {product.product_id}</p>
             <p className="text-gray-500 text-sm">Current Stock: {product.quantity} {product.unit}</p>
           </div>
 

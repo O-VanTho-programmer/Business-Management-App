@@ -16,7 +16,7 @@ export async function GET(req: Request) {
                 tp.change_quantity as quantity,
                 tp.price_at_trans as price_unit,
                 p.product_name,
-                p.product_id as product_code
+                p.product_id as product_id
             FROM sale_transaction st
             JOIN transaction_product tp ON tp.transaction_id = st.transaction_id
             JOIN product p ON p.product_id = tp.product_id

@@ -21,7 +21,7 @@ export default function ProductList({ products, selectedProducts, type, handleAd
         <div className='overflow-x-scroll'>
             {products.map((product) => {
                 return (
-                    <div key={product.product_code} className='mt-2 relative flex flex-col p-4 bg-white rounded-lg shadow-sm border border-gray-200
+                    <div key={product.product_id} className='mt-2 relative flex flex-col p-4 bg-white rounded-lg shadow-sm border border-gray-200
                        hover:border-blue-400 hover:shadow-md transition-all duration-300 ease-in-out group'>
                         <div className='flex justify-between items-center'>
                             <div className='flex items-center'>
@@ -40,7 +40,7 @@ export default function ProductList({ products, selectedProducts, type, handleAd
 
                         </div>
 
-                        <span className='text'>CODE: {product.product_code}</span>
+                        <span className='text'>CODE: {product.product_id}</span>
 
                         <span className='text'>{product.unit} • "$" {product.price}</span>
 

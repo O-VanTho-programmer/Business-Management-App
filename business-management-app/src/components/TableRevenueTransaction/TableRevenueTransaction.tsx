@@ -30,7 +30,7 @@ function TableRevenueTransaction({ transactions }: Props) {
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.date}</td>
                   <td className='py-4 px-6 whitespace-nowrap'>
                     <p className="text-sm font-medium text-gray-900">{trans.product_name}</p>
-                    <p className="text-xs text-gray-500">CODE: {trans.product_code}</p>
+                    <p className="text-xs text-gray-500">CODE: {trans.product_id}</p>
                   </td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.price_unit}</td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.quantity}</td>

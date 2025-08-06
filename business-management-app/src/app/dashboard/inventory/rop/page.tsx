@@ -18,11 +18,11 @@ function ROP() {
     const { query, changeSearchVal } = useProductQuery();
     const { data: products, loading, error } = useFetchList('products', query);
 
-    const handleChangeROP = (product_code: string, newROP: number | null) => {
+    const handleChangeROP = (product_id: string, newROP: number | null) => {
         if (newROP !== null) {
             setPendingChanges(prev => ({
                 ...prev,
-                [product_code]: newROP,
+                [product_id]: newROP,
             }))
 
             setIsPendingChanged(true);

@@ -5,7 +5,7 @@ export async function POST(req: Request) {
     try {
         const body = await req.json();
         let {
-            product_code,
+            product_id,
             product_name,
             quantity,
             unit,
@@ -14,8 +14,8 @@ export async function POST(req: Request) {
             ROP,
             category } = body.newProduct;
 
-        if(!product_code){
-            product_code = Math.random().toString(36).substr(2, 5).toUpperCase();
+        if(!product_id){
+            product_id = Math.random().toString(36).substr(2, 5).toUpperCase();
         }
         
         const query = `
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?);
         `;
 
-        await pool.query(query, [product_code, product_name, quantity, unit, price, cost, ROP ? ROP : null, category ]);
+        await pool.query(query, [product_id, product_name, quantity, unit, price, cost, ROP ? ROP : null, category ]);
         
         return NextResponse.json({status: 200});
     } catch (error) {
