@@ -5,6 +5,7 @@ import AlertTag from '../AlertTag/AlertTag'
 import ChangeQuantityModal from '../Modals/ChangeQuantityModal/ChangeQuantityModal';
 import { Edit, Trash2 } from 'lucide-react';
 import AddProductModal from '../Modals/AddProductModal/AddProductModal';
+import formatCurrency from '@/utils/formatCurrency';
 
 type Props = {
     products: Product[]
@@ -128,8 +129,8 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
 
                                                 {product.quantity_change} {product.unit}
                                             </td>
-                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>${product.price}/{product.unit}</td>
-                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>${product.price * product.quantity_change}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{formatCurrency(product.price)}/{product.unit}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{formatCurrency(product.price * product.quantity_change)}</td>
                                         </>
                                     )}
 
@@ -157,7 +158,7 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                                 <AlertTag color='blue' icon='Tag' title={product.category ? product.category : ""} />
                                             </td>
                                             <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.quantity}</td>
-                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>${product.price}</td>
+                                            <td className='py-4 px-6 whitespace-nowrap text-sm'>{formatCurrency(product?.price || 0)}</td>
                                             <td className='py-4 px-6 whitespace-nowrap text-sm'>{product.ROP ? product.ROP : 'Unset'}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <div className="flex items-center justify-end space-x-2">
@@ -192,7 +193,7 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                                 <td colSpan={2} className='font-bold text-lg py-4 px-6 whitespace-nowrap'>Total Price</td>
                                 <td className='py-4 px-6 whitespace-nowrap text-sm'></td>
                                 <td className='py-4 px-6 whitespace-nowrap text-sm'></td>
-                                <td className='font-bold text-lg py-4 px-6 text-left whitespace-nowrap '>${totalPrice}</td>
+                                <td className='font-bold text-lg py-4 px-6 text-left whitespace-nowrap '>{formatCurrency(totalPrice)}</td>
                             </tr>
                         )}
                     </tfoot>

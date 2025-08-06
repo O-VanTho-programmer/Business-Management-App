@@ -6,7 +6,7 @@ export async function GET(req: Request) {
     const startDate = searchParams.get("startDate");
     const endDate = searchParams.get("endDate");
 
-    try {        
+    try {
         let query = `
             SELECT 
                 DATE_FORMAT(st.trans_date, '%M %e, %Y %l:%i %p') as date,
@@ -22,17 +22,21 @@ export async function GET(req: Request) {
             JOIN product p ON p.product_id = tp.product_id
         `
 
-        if(startDate && endDate){
+        if (startDate && endDate) {
             query += `
                 WHERE st.trans_date > '${startDate}' AND st.trans_date <= '${endDate}'
             `;
         }
 
+        query += `
+            ORDER BY date ASC
+        `
+
         const [revenue_transactions] = await pool.query(query);
 
-        return NextResponse.json({revenue_transactions})
+        return NextResponse.json({ revenue_transactions })
     } catch (error) {
         console.log("Error", error);
-        return NextResponse.json({message: "Error revenue transaction API"} , {status: 500})
+        return NextResponse.json({ message: "Error revenue transaction API" }, { status: 500 })
     }
 }

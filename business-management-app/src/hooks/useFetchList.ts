@@ -26,5 +26,5 @@ export default function useFetchList(path:string, query:string = '') {
         fetchDatas();
     }, [path, query]);
 
-    return { data, loading, error };
+    return { data, loading, error, setData };
 }

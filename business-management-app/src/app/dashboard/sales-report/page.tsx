@@ -7,6 +7,7 @@ import TableRevenueTransaction from '@/components/TableRevenueTransaction/TableR
 import useFetchList from '@/hooks/useFetchList'
 import useInventoryQuery from '@/hooks/useInventoryQuery'
 import useRevenueTransactionSummary from '@/hooks/useRevenueTransactionSummary'
+import formatCurrency from '@/utils/formatCurrency'
 import { BarChart2, Table } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 
@@ -96,17 +97,17 @@ function SaleReport() {
 
             <div className='flex gap-4 mb-5'>
                 <Card title='Total Profit'
-                    content={`$${totalProfit}`}
+                    content={`${formatCurrency(totalProfit)}`}
                     icon='HandCoins'
                     iconColor='text-blue-500'
                     text_color='text-blue-600' />
                 <Card title='Order Cost'
-                    content={`$${totalCost}`}
+                    content={`${formatCurrency(totalCost)}`}
                     icon='BanknoteArrowDown'
                     iconColor='text-red-500'
                     text_color='text-red-600' />
                 <Card title='Revenue'
-                    content={`$${revenue}`}
+                    content={`${formatCurrency(revenue)}`}
                     icon='BanknoteArrowUp'
                     iconColor='text-green-500'
                     text_color='text-green-600' />

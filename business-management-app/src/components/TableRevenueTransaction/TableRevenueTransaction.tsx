@@ -1,3 +1,4 @@
+import formatCurrency from '@/utils/formatCurrency'
 import { TrendingDown, TrendingUp } from 'lucide-react'
 import React from 'react'
 
@@ -33,7 +34,7 @@ function TableRevenueTransaction({ transactions }: Props) {
                   </td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.price_unit}</td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.quantity}</td>
-                  <td className={`py-4 px-6 whitespace-nowrap text-sm font-medium ${trans.type === 'SELL' ? 'text-green-600' : 'text-red-500'}`}>{trans.total_price} ${trans.type === 'SELL' ? <TrendingUp /> : <TrendingDown />}</td>
+                  <td className={`py-4 px-6 whitespace-nowrap text-sm font-medium ${trans.type === 'SELL' ? 'text-green-600' : 'text-red-500'}`}>{formatCurrency(trans.total_price)}{trans.type === 'SELL' ? <TrendingUp /> : <TrendingDown />}</td>
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.customer}</td>
                 </tr>
               )

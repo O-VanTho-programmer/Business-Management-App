@@ -21,7 +21,7 @@ function Nav() {
                             <li><a href='/dashboard/inventory/rop'>ROP</a></li>
                         </ul>
                     </li>
-                    <li><a href=''>Discounts</a></li>
+                    <li><a href='/dashboard/discounts'>Discounts</a></li>
                     <li><a href='/dashboard/sales-report'>Sales Report</a></li>
                     <li><a href='/dashboard/products'>Products</a></li>
                     <li>

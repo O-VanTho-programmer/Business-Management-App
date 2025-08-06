@@ -10,8 +10,8 @@ export async function POST(req: Request) {
             SELECT product_name FROM product WHERE product_name = ?
         `;
 
-        const queryGetProductId = `
-            SELECT product_id FROM product WHERE product_name = ?
+        const getProductByName = `
+            SELECT * FROM product WHERE product_name = ?
         `
 
         const queryUpdateProduct = `
@@ -29,11 +29,12 @@ export async function POST(req: Request) {
 
         let totalAmount = 0;
 
-        for(const item of items){
+        for (const item of items) {
             totalAmount += item.total_price;
         }
 
         let userId = "U123";
+
         //New Order
         const orderId = Math.random().toString(36).substr(2, 5).toUpperCase();
         const [trans] = await pool.query(
@@ -43,22 +44,28 @@ export async function POST(req: Request) {
 
         for (const item of items) {
             const [existed] = await pool.query(queryIsExisted, [item.product_name]) as any[];
-            let productId;
 
             if (existed.length > 0) {
                 await pool.query(queryUpdateProduct, [item.quantity, item.product_name]);
-
-                const [idRows] = await pool.query(queryGetProductId, [item.product_name]) as any[];
-                productId = idRows[0].product_id
             } else {
-                productId = Math.random().toString(36).substr(2, 5).toUpperCase();
-                await pool.query(queryNewProduct, [productId, item.product_name, item.quantity, item?.unit || 'unit', item.unit_price])
+                let randomProductId = Math.random().toString(36).substr(2, 5).toUpperCase();
+                await pool.query(queryNewProduct, [randomProductId, item.product_name, item.quantity, item?.unit || 'unit', item.unit_price])
             }
 
+            const [productRows] = await pool.query(getProductByName, [item.product_name]) as any[];
+            const product = productRows[0];
+
+            // Add product to current order
             await pool.query(
                 `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans) VALUES (?, ?, ?, ?)`,
-                [orderId, productId, item.quantity, item.unit_price]
+                [orderId, product.product_id, item.quantity, item.unit_price]
             )
+
+            // Update inventory movement
+            await pool.query(
+                `INSERT INTO inventory_transaction (type, quantity, previous_quantity, new_quantity, product_id, user_id, trans_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
+                ['RESTOCK', item.quantity, product.quantity - item.quantity, product.quantity, product.product_id, userId, orderId]
+            );
         }
 
         return NextResponse.json({ items }, { status: 200 })

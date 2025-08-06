@@ -6,7 +6,7 @@ type Props = {
     onClick?: () => void,
     icon?: 'Save' | 'RotateCcw' | 'PlusCircle' | 'Tag' | 'PackagePlus' | 'ShoppingBasket',
     title: string,
-    bg_color?: "red" | "gray" | "blue",
+    bg_color?: "red" | "gray" | "blue" | "white",
 }
 
 export default function Button({onClick, isDisable, icon, title, bg_color}: Props) {
@@ -35,6 +35,12 @@ export default function Button({onClick, isDisable, icon, title, bg_color}: Prop
             bgColorHover = "hover:bg-blue-700";
             ringColor = "focus:ring-blue-600";
             text_color = "text-white";
+            break;
+        case "white":
+            bgColor = "bg-white";
+            bgColorHover = "hover:bg-gray-100";
+            ringColor = "focus:ring-gray-300";
+            text_color = "text-gray-700";
             break;
     }
 

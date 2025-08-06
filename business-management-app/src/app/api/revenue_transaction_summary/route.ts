@@ -24,7 +24,7 @@ export async function GET(req: Request) {
         `) as any[];
 
         const totalProfitValue = revenueResult.total_revenue - orderCostResult.total_order_cost;
-        const totalProfit = `${totalProfitValue.toFixed(2)}`;
+        const totalProfit = `${totalProfitValue}`;
 
         const queryTopSoldProduct = `
             SELECT 

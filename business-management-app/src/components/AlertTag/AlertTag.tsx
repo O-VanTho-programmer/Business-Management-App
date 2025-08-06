@@ -2,13 +2,13 @@ import { CircleAlert, CircleCheck, Clock, Tag } from 'lucide-react'
 import React from 'react'
 
 type Props = {
-    icon: 'CircleAlert' | 'Clock' | 'CircleCheck' | 'Tag',
+    icon?: 'CircleAlert' | 'Clock' | 'CircleCheck' | 'Tag',
     color: 'yellow' | 'red' | 'green' | 'blue',
     title: string,
 }
 
 export default function AlertTag({ icon, color, title }: Props) {
-    const IconComponent = { CircleAlert, Clock, CircleCheck, Tag }[icon];
+    const IconComponent = icon ? { CircleAlert, Clock, CircleCheck, Tag }[icon] : null;
     let bgColorClass = '';
     let textColorClass = '';
 
@@ -36,7 +36,7 @@ export default function AlertTag({ icon, color, title }: Props) {
 
     return (
         <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bgColorClass} ${textColorClass} ml-auto`}>
-            <IconComponent size={14} className='mr-1' />
+            {IconComponent && <IconComponent size={14} className='mr-1' />}
             {title}
         </span>
     )
