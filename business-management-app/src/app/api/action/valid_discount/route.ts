@@ -124,17 +124,13 @@ export async function POST(req: Request) {
         }
 
         if (hasAllCategory) {
-            // Apply discount to all products
             for (let i = 0; i < selectedProducts.length; i++) {
                 appliedIndexProducts.add(i);
             }
         }
-
-        // If no specific products/categories are defined, apply to all products
+        
         if (appliedIndexProducts.size === 0) {
-            for (let i = 0; i < selectedProducts.length; i++) {
-                appliedIndexProducts.add(i);
-            }
+           
         }
 
         // Apply discount to eligible products
@@ -142,13 +138,16 @@ export async function POST(req: Request) {
 
         for (let i of appliedIndexProducts) {
             const product = updatedProducts[i];
-            const originalPrice = product.price * product.quantity;
+            const originalPrice = product.price * product.quantity_change;
 
             let discountAmount = 0;
-            if (discountInfo.type === 'PERCENTAGE') {
+
+            if (discountInfo.type.match('PERCENTAGE')) {
                 discountAmount = originalPrice * (discountInfo.value / 100);
+                console.log("Percentage:" + discountAmount);
             } else {
                 discountAmount = Math.min(discountInfo.value, originalPrice);
+                console.log("Fix Cost:" + discountAmount);
             }
 
             // Apply discount limit if specified

@@ -6,7 +6,7 @@ import Button from '@/components/Button/Button';
 import ProductListTable from '@/components/ProductListTable/ProductListTable'
 import api from '@/lib/axios';
 import { CirclePlus, ShoppingCart, User, Receipt, DollarSign, Percent } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SaleTransactionHistory from '@/components/SaleTransactionHistory/SaleTransactionHistory';
 import useFetchList from '@/hooks/useFetchList';
 import DiscountApply from '@/components/DiscountApply/DiscountApply';
@@ -19,6 +19,7 @@ function SaleProduct() {
 
     const [customerName, setCustomerName] = useState<string>("");
     const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+    const [pendingDiscountProducts, setPendingDiscountProducts] = useState<Product[]>([]);
     const [openPopup, setOpenPopup] = useState<boolean>(false);
 
     const handleChangeQuantity = (product_id: string, quantity_change: number) => {
@@ -79,7 +80,9 @@ function SaleProduct() {
         }
 
         let total = calculateSubtotal;
-        if (appliedDiscount) {
+
+        // Only reflect discount in total if there is no pending preview to apply
+        if (appliedDiscount && pendingDiscountProducts.length === 0) {
             if (appliedDiscount.type === 'PERCENTAGE') {
                 total = total - (total * appliedDiscount.value / 100);
             } else {
@@ -90,16 +93,34 @@ function SaleProduct() {
         return Math.max(0, total); // Ensure total doesn't go below 0
     };
 
+    // Preview total if there are pending discounted products from code validation
+    const calculatePendingDiscountTotal = pendingDiscountProducts.reduce((acc, product) => {
+        if (product.discounted_price !== undefined) {
+            return acc + product.discounted_price;
+        } else if (product.price && product.quantity_change) {
+            return acc + product.price * product.quantity_change;
+        }
+        return acc;
+    }, 0);
+
+    const handleConfirmApplyPendingDiscount = () => {
+        if (pendingDiscountProducts.length === 0) return;
+        setSelectedProducts(pendingDiscountProducts);
+        setPendingDiscountProducts([]);
+        showAlert('Discount applied to cart', 'success');
+    }
+
     const handleApplyDiscount = async (discountCode: string) => {
         try {
-            const res = await api.post(`valid_discount`, {
+            const res = await api.post(`action/valid_discount`, {
                 discount_code: discountCode,
                 selectedProducts
             });
 
             if (res.status === 200) {
                 setAppliedDiscount(res.data.discount);
-                setSelectedProducts(res.data.updatedProducts);
+                // setSelectedProducts(res.data.updatedProducts);
+                setPendingDiscountProducts(res.data.updatedProducts);
                 showAlert(res.data.message, 'success');
             } else {
                 showAlert(res.data.message, 'error');
@@ -109,8 +130,14 @@ function SaleProduct() {
         }
     }
 
+    const handleClear = () => {
+        setSelectedProducts([]);
+        handleRemoveDiscount();
+    }
+
     const handleRemoveDiscount = () => {
         setAppliedDiscount(undefined);
+        setPendingDiscountProducts([]);
     }
 
     return (
@@ -225,9 +252,48 @@ function SaleProduct() {
                                 <h2 className="text-lg font-semibold text-gray-900">Discounts & Promotions</h2>
                             </div>
                             <DiscountApply
+                                appliedDiscount={appliedDiscount}
                                 onApplyDiscount={handleApplyDiscount}
                                 onRemoveDiscount={handleRemoveDiscount}
                             />
+
+                            {pendingDiscountProducts.length > 0 && (
+                                <div className="mt-4 rounded-xl border border-blue-200 bg-blue-50 p-4">
+                                    <div className="flex items-start justify-between">
+                                        <div>
+                                            <p className="text-sm font-medium text-blue-900">Discount preview ready</p>
+                                            <div className="mt-2 text-sm text-blue-800 space-y-1">
+                                                <div className="flex justify-between w-full">
+                                                    <span>Current total</span>
+                                                    <span className="font-semibold">{formatCurrency(calculateTotal())}</span>
+                                                </div>
+                                                <div className="flex justify-between w-full">
+                                                    <span>Total with discount</span>
+                                                    <span className="font-semibold">{formatCurrency(calculatePendingDiscountTotal)}</span>
+                                                </div>
+                                                <div className="flex justify-between w-full">
+                                                    <span>Savings</span>
+                                                    <span className="font-semibold text-green-700">{formatCurrency(Math.max(0, calculateTotal() - calculatePendingDiscountTotal))}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 flex items-center gap-2">
+                                        <button
+                                            onClick={handleConfirmApplyPendingDiscount}
+                                            className="inline-flex items-center px-4 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                                        >
+                                            Apply to cart
+                                        </button>
+                                        <button
+                                            onClick={handleRemoveDiscount}
+                                            className="inline-flex items-center px-4 py-2 rounded-lg bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
+                                        >
+                                            Discard
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -298,7 +364,7 @@ function SaleProduct() {
                                     />
                                     {selectedProducts.length > 0 && (
                                         <button
-                                            onClick={() => setSelectedProducts([])}
+                                            onClick={handleClear}
                                             className="w-full px-4 py-3 text-gray-600 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors font-medium"
                                         >
                                             Clear Cart

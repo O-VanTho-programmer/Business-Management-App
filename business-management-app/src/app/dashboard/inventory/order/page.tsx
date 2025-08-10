@@ -100,7 +100,7 @@ function Order() {
                 </div>
             </div>
 
-            <div className='flex gap-4 max-h-[580px]'>
+            <div className='flex gap-4 max-h-[580px] mb-6'>
                 <div className='wrapper p-4 flex-2/3'>
                     <ProductListTable onDeleteProduct={handleDeleteOrderProduct} onQuantityChange={handleChangeQuantity} products={selectedProducts} type='order_placement' />
                 </div>

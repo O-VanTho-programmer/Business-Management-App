@@ -13,8 +13,8 @@ export async function GET(req: Request) {
                     JSON_OBJECT(
                         'product_id', tp.product_id,
                         'product_name', p.product_name,
-                        'order_quantity', tp.change_quantity,
-                        'price_at_order', tp.price_at_trans,
+                        'change_quantity', tp.change_quantity,
+                        'price_at_trans', tp.price_at_trans,
                         'unit', p.unit
                     )
                 ) as products

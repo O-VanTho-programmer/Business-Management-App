@@ -1,7 +1,7 @@
 import { Discount } from '@/types/Discount'
 import formatCurrency from '@/utils/formatCurrency';
 import { Check, Tag, X, Percent, DollarSign, Sparkles, TicketPercent } from 'lucide-react'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 type Props = {
     appliedDiscount?: Discount,
@@ -10,6 +10,10 @@ type Props = {
 }
 
 export default function DiscountApply({ appliedDiscount, onApplyDiscount, onRemoveDiscount }: Props) {
+    useEffect(() => {
+        console.log(appliedDiscount);
+    }, [appliedDiscount])
+
     const [discountCode, setDiscountCode] = useState("");
     const [isFocused, setIsFocused] = useState(false);
 
@@ -50,9 +54,8 @@ export default function DiscountApply({ appliedDiscount, onApplyDiscount, onRemo
                         <div className="space-y-4">
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                    <TicketPercent className={`h-5 w-5 transition-colors duration-200 ${
-                                        isFocused ? 'text-purple-500' : 'text-gray-400'
-                                    }`} />
+                                    <TicketPercent className={`h-5 w-5 transition-colors duration-200 ${isFocused ? 'text-purple-500' : 'text-gray-400'
+                                        }`} />
                                 </div>
                                 <input
                                     type="text"
@@ -61,23 +64,21 @@ export default function DiscountApply({ appliedDiscount, onApplyDiscount, onRemo
                                     onFocus={() => setIsFocused(true)}
                                     onBlur={() => setIsFocused(false)}
                                     onKeyPress={handleKeyPress}
-                                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl shadow-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-purple-100 ${
-                                        isFocused 
-                                            ? 'border-purple-400 bg-white' 
+                                    className={`w-full pl-12 pr-4 py-4 border-2 rounded-xl shadow-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-purple-100 ${isFocused
+                                            ? 'border-purple-400 bg-white'
                                             : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
-                                    } uppercase font-medium text-gray-700 placeholder-gray-400`}
+                                        } uppercase font-medium text-gray-700 placeholder-gray-400`}
                                     placeholder="Enter your discount code"
                                 />
                             </div>
-                            
+
                             <button
                                 onClick={handleApplyDiscount}
                                 disabled={!discountCode.trim()}
-                                className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg ${
-                                    discountCode.trim()
+                                className={`w-full py-4 px-6 rounded-xl font-semibold text-white transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] shadow-lg ${discountCode.trim()
                                         ? 'bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 shadow-green-200'
                                         : 'bg-gray-300 cursor-not-allowed shadow-gray-200'
-                                }`}
+                                    }`}
                             >
                                 <div className="flex items-center justify-center">
                                     <Check size={20} className="mr-2" />
@@ -101,8 +102,8 @@ export default function DiscountApply({ appliedDiscount, onApplyDiscount, onRemo
                                                 <div className="flex items-center text-green-600">
                                                     {getDiscountIcon(appliedDiscount.type)}
                                                     <span className="ml-1 font-semibold">
-                                                        {appliedDiscount.type === 'PERCENTAGE' 
-                                                            ? `${appliedDiscount.value}%` 
+                                                        {appliedDiscount.type === 'PERCENTAGE'
+                                                            ? `${appliedDiscount.value}%`
                                                             : formatCurrency(appliedDiscount.value)
                                                         }
                                                     </span>
@@ -113,7 +114,7 @@ export default function DiscountApply({ appliedDiscount, onApplyDiscount, onRemo
                                             </p>
                                         </div>
                                     </div>
-                                    
+
                                     <button
                                         onClick={onRemoveDiscount}
                                         className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all duration-200"
@@ -128,9 +129,8 @@ export default function DiscountApply({ appliedDiscount, onApplyDiscount, onRemo
                                 <p className="text-gray-600 text-sm mb-3">Want to apply another discount?</p>
                                 <div className="relative">
                                     <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                                        <TicketPercent className={`h-5 w-5 transition-colors duration-200 ${
-                                            isFocused ? 'text-purple-500' : 'text-gray-400'
-                                        }`} />
+                                        <TicketPercent className={`h-5 w-5 transition-colors duration-200 ${isFocused ? 'text-purple-500' : 'text-gray-400'
+                                            }`} />
                                     </div>
                                     <input
                                         type="text"
@@ -139,11 +139,10 @@ export default function DiscountApply({ appliedDiscount, onApplyDiscount, onRemo
                                         onFocus={() => setIsFocused(true)}
                                         onBlur={() => setIsFocused(false)}
                                         onKeyPress={handleKeyPress}
-                                        className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-purple-100 ${
-                                            isFocused 
-                                                ? 'border-purple-400 bg-white' 
+                                        className={`w-full pl-12 pr-4 py-3 border-2 rounded-lg shadow-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-purple-100 ${isFocused
+                                                ? 'border-purple-400 bg-white'
                                                 : 'border-gray-200 bg-gray-50 hover:bg-white hover:border-gray-300'
-                                        } uppercase font-medium text-gray-700 placeholder-gray-400 text-sm`}
+                                            } uppercase font-medium text-gray-700 placeholder-gray-400 text-sm`}
                                         placeholder="Enter another discount code"
                                     />
                                 </div>

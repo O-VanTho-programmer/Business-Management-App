@@ -9,7 +9,11 @@ export async function POST(res: Response) {
         let totalAmount = 0;
 
         for (let p of products) {
-            totalAmount += p.price * p.quantity_change;
+            if (p.discounted_price) {
+                totalAmount += p.discounted_price * p.quantity_change;
+            } else {
+                totalAmount += p.price * p.quantity_change;
+            }
         }
 
         const transId = Math.random().toString(36).substr(2, 5).toUpperCase();
@@ -19,10 +23,17 @@ export async function POST(res: Response) {
         );
 
         for (let p of products) {
-            await pool.query(
-                `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans) VALUES (?, ?, ?, ?)`,
-                [transId, p.product_id, p.quantity_change, p.price]
-            )
+            if (p.discounted_price) {
+                await pool.query(
+                    `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans, discounted_price) VALUES (?, ?, ?, ?, ?)`,
+                    [transId, p.product_id, p.quantity_change, p.price, p.discounted_price]
+                )
+            } else {
+                await pool.query(
+                    `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans) VALUES (?, ?, ?, ?)`,
+                    [transId, p.product_id, p.quantity_change, p.price]
+                )
+            }
 
             await pool.query(`
                 UPDATE product
