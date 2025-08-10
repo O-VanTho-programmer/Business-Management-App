@@ -11,8 +11,8 @@ import React, { useState } from 'react'
 
 function Inventory() {
 
-  
-  const { query, changeSearchVal, changeStockFilter, resetStockFilter} = useProductQuery();
+
+  const { query, changeSearchVal, changeStockFilter, resetStockFilter } = useProductQuery();
 
   const { data: products, loading, error } = useFetchList("products", query);
   const { totalStock, totalLowStockItem, totalOutStockItem } = useInventoryStatus();
@@ -26,12 +26,13 @@ function Inventory() {
   }
 
   const handleFilter = (filter: string) => {
+    setActiveFilter(filter ? [filter] : []);
+
     if (filter === "All") {
       resetStockFilter();
       return;
     }
 
-    setActiveFilter(filter ? [filter] : []);
     changeStockFilter(tagsValues[filter] || "");
   }
 
@@ -54,7 +55,7 @@ function Inventory() {
           <div className='mb-4'>
             <TagFilter onToggle={handleFilter} tags={tags} selectedTags={activeFilter} multiple={false} />
           </div>
-          <SearchBar onSearch={changeSearchVal} bg_color='bg-white' border_color='border-white' />
+          <SearchBar placeholder='Search products by name or code' onSearch={changeSearchVal} bg_color='bg-white' border_color='border-white' />
           <ProductListTable products={products} type='all' />
         </div>
       </div>

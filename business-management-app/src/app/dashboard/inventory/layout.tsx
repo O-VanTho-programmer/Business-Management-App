@@ -9,7 +9,7 @@ export default function InventoryLayout({
 
     const navFooterItems: NavItem[] = [
         { name: 'Stock', href: '/dashboard/inventory', icon: 'Boxes' },
-        { name: 'Stock Movement', href: '/dashboard/inventory/transactions', icon: 'TrendingUpDown' },
+        { name: 'Stock Movement', href: '/dashboard/inventory/inventory_movement', icon: 'TrendingUpDown' },
         { name: 'Order Product', href: '/dashboard/inventory/order', icon: 'PackagePlus' },
         { name: 'Product Sale', href: '/dashboard/inventory/sell', icon: 'BadgeDollarSign' },
         { name: 'Set ROP', href: '/dashboard/inventory/rop', icon: 'ArchiveRestore' },

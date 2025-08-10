@@ -1,5 +1,5 @@
 interface Product {
-    product_code: string;
+    product_id: string;
     product_name: string;
     quantity: number;
     unit: string;
@@ -9,4 +9,6 @@ interface Product {
     ROP?: number;
     category?: string;
     update_date?: string;
+    discounted_price?: number;
+    discount_amount?: number;
 }

@@ -5,6 +5,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const stock = searchParams.get("stock");
     const search = searchParams.get("search");
+    const category_id = searchParams.get("category_id");
 
     try {
         let conditions: string[] = [];
@@ -17,6 +18,10 @@ export async function GET(req: Request) {
             conditions.push(`(p.quantity_in_stock BETWEEN 1 AND p.ROP AND p.ROP IS NOT NULL)`);
         } else if (stock === "out") {
             conditions.push(`p.quantity_in_stock = 0`);
+        }
+
+        if(category_id) {
+            conditions.push(`(p.category_id = "${category_id}")`);
         }
 
         let query = `
@@ -39,7 +44,7 @@ export async function GET(req: Request) {
 
         const [rows] = await pool.query<any[]>(query);
         const products = rows.map(row => ({
-            product_code: row.product_id,
+            product_id: row.product_id,
             product_name: row.product_name,
             quantity: row.quantity_in_stock,
             unit: row.unit,

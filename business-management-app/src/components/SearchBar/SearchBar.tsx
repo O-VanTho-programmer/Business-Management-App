@@ -18,7 +18,7 @@ export default function SearchBar({ onSearch, placeholder = "Search...", bg_colo
     }
 
     return (
-        <div className={`flex items-center py-3 px-2 ${bg_color} border ${border_color} rounded-lg`}>
+        <div className={`flex items-center py-2 px-2 ${bg_color} border ${border_color} rounded-lg`}>
             <Search />
             <input
                 className='outline-none border-none ml-2 w-full'

@@ -4,6 +4,7 @@ import SearchBar from '../SearchBar/SearchBar'
 import useFetchList from '@/hooks/useFetchList'
 import useProductQuery from '@/hooks/useProductQuery'
 import Loading from '../Loading/Loading'
+import { useAlert } from '../AlertProvider/AlertContext'
 
 type Props = {
   onClose: () => void,
@@ -12,13 +13,19 @@ type Props = {
 }
 
 export default function AddSaleProductPopup({ onClose, selectedProducts, setSelectedProducts }: Props) {
+  const { showAlert } = useAlert();
 
   const { query, changeSearchVal } = useProductQuery();
   const { data: products, error, loading } = useFetchList('products', query);
 
   const addProduct = (product: Product) => {
+    if(product.quantity <= 0){
+      showAlert("The product is out of stock!! Cannot be selected", 'warning');
+      return;
+    }
+
     setSelectedProducts(prev => {
-      let existIndex = prev.findIndex(p => p.product_code === product.product_code);
+      let existIndex = prev.findIndex(p => p.product_id === product.product_id);
 
       if (existIndex !== -1) {
         let update = [...prev];
@@ -39,7 +46,7 @@ export default function AddSaleProductPopup({ onClose, selectedProducts, setSele
       <div className='h-full w-full absolute' onClick={onClose}></div>
       <div className='popup'>
         <div className='wrapper p-4 flex-1/3 flex flex-col gap-3 h-full'>
-          <SearchBar placeholder='Search products' onSearch={changeSearchVal} />
+          <SearchBar placeholder='Search products by name or code'  onSearch={changeSearchVal} />
 
           {loading ? (
             <Loading state='loading' />

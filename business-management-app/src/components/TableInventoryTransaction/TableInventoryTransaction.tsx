@@ -28,17 +28,17 @@ function TableInventoryTransaction({ transactions }: Props) {
                   <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.date}</td>
                   <td className='py-4 px-6 whitespace-nowrap'>
                     <p className="text-sm font-medium text-gray-900">{trans.product_name}</p>
-                    <p className="text-xs text-gray-500">CODE: {trans.product_code}</p>
+                    <p className="text-xs text-gray-500">CODE: {trans.product_id}</p>
                   </td>
                   <td className={`py-4 px-6 whitespace-nowrap text-[10px] `}>
                     <span className={`p-[6px] rounded-2xl font-bold ${trans.type === 'RESTOCK' ? "bg-green-100 text-green-800" : trans.type === 'SALE' ? "bg-blue-100 text-blue-800" : "bg-yellow-100 text-yellow-800"}`}>
                       {trans.type}
                     </span>
                   </td>
-                  <td className={` ${trans.type === 'SALE' ? 'text-red-600' : 'text-green-600'} font-semibold py-4 px-6 whitespace-nowrap text-sm`}>{trans.type === 'SALE' ? '-' : '+'}{trans.quantity} {trans.unit}</td>
-                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.previous_quantity}</td>
-                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.new_quantity}</td>
-                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.user_code}</td>
+                  <td className={` ${trans.type === 'SALE' ? 'text-red-600' : 'text-green-600'} font-semibold py-4 px-6 whitespace-nowrap text-sm text-right`}>{trans.type === 'SALE' ? '-' : '+'}{trans.quantity} {trans.unit}</td>
+                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.previous_quantity} {trans.unit}</td>
+                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.new_quantity} {trans.unit}</td>
+                  <td className='py-4 px-6 whitespace-nowrap text-sm'>{trans.user}</td>
                 </tr>
               )
             })}

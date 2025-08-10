@@ -8,7 +8,7 @@ export default function DashboardLayout({
     return (
         <>
             <Nav />
-            <div className="container">
+            <div className="container bg_slate_blue">
                 {children}
             </div>
         </>

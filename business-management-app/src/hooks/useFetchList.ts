@@ -2,7 +2,7 @@ import api from "@/lib/axios";
 import { useEffect, useState } from "react";
 
 export default function useFetchList(path:string, query:string = '') {
-    const [data, setData] = useState<any[]>([]);
+    const [data, setData] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<any>(null);
 
@@ -26,5 +26,5 @@ export default function useFetchList(path:string, query:string = '') {
         fetchDatas();
     }, [path, query]);
 
-    return { data, loading, error };
+    return { data, loading, error, setData };
 }

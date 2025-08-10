@@ -1,13 +1,14 @@
 import { useAlert } from '@/components/AlertProvider/AlertContext';
+import ButtonIcon from '@/components/ButtonIcon/ButtonIcon';
 import { X } from 'lucide-react';
 import React, { useState } from 'react'
 
 type Props = {
-  type: 'all' | 'low-stock' | 'order_placement' | 'sell',
+  type: 'all' | 'low-stock' | 'order_placement' | 'sell' | 'product_list',
   product: Product | null,
   onOpen: boolean,
   onClose: () => void,
-  onSaveNewQuantity?: (product_code: string, quantity_change: number) => void
+  onSaveNewQuantity?: (product_id: string, quantity_change: number) => void
 }
 
 export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNewQuantity, type }: Props) {
@@ -26,7 +27,7 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
     }
 
     if (onSaveNewQuantity && product) {
-      onSaveNewQuantity(product.product_code, quantityInput);
+      onSaveNewQuantity(product.product_id, quantityInput);
     }
 
     onClose();
@@ -40,20 +41,14 @@ export default function ChangeQuantityModal({ onOpen, product, onClose, onSaveNe
     <div>
       <div className="overlay">
         <div className="bg-white rounded-lg p-6 shadow-xl max-w-sm w-full relative">
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 text-gray-400 hover:text-gray-600 rounded-full p-1"
-            aria-label="Close modal"
-          >
-            <X size={20} />
-          </button>
+          <ButtonIcon icon='X' onClick={onClose}/>
           <h2 className="text-xl font-bold mb-4 text-gray-800">
             {type === 'sell' ? 'Adjust quantity to Sell' : 'Add Quantity to Order'}
           </h2>
 
           <div className="mb-4">
             <p className="text-gray-700 text-lg font-semibold">{product.product_name}</p>
-            <p className="text-gray-500 text-sm">Product Code: {product.product_code}</p>
+            <p className="text-gray-500 text-sm">Product Code: {product.product_id}</p>
             <p className="text-gray-500 text-sm">Current Stock: {product.quantity} {product.unit}</p>
           </div>
 

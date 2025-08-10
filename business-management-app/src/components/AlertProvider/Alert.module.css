@@ -1,3 +1,58 @@
+/* Additional animations for the new alert system */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideOutRight {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px) scale(0.95); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+}
+
+@keyframes fadeOut {
+  from { 
+    opacity: 1; 
+    transform: translateY(0) scale(1); 
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(-10px) scale(0.95); 
+  }
+}
+
+@keyframes progressShimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+/* Legacy styles for backward compatibility */
 .alert {
   padding: 12px 24px;
   border-radius: 6px;
@@ -8,19 +63,36 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   animation: fadeIn 0.3s;
 }
+
 .alert-info {
   background: #2196f3;
 }
+
 .alert-success {
   background: #4caf50;
 }
+
 .alert-error {
   background: #f44336;
 }
+
 .alert-warning {
   background: #ff9800;
 }
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
+
+/* Enhanced progress bar styles */
+.progress-bar {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  background-size: 200px 100%;
+  animation: progressShimmer 2s infinite;
+}
+
+/* Hover effects for better interactivity */
+.alert-hover {
+  transition: all 0.2s ease-in-out;
+}
+
+.alert-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }

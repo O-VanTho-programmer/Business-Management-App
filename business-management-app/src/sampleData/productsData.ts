@@ -1,6 +1,6 @@
 const sampleProducts: Product[] = [
     {
-        product_code: 'P001',
+        product_id: 'P001',
         product_name: 'Organic Apples (Red)',
         quantity: 150,
         unit: 'pcs',
@@ -12,7 +12,7 @@ const sampleProducts: Product[] = [
         update_date: '2025-06-14T10:00:00Z',
     },
     {
-        product_code: 'P002',
+        product_id: 'P002',
         product_name: 'Premium Coffee Beans (Arabica)',
         quantity: 70,
         unit: 'bags',
@@ -24,7 +24,7 @@ const sampleProducts: Product[] = [
         update_date: '2025-06-14T11:30:00Z',
     },
     {
-        product_code: 'P003',
+        product_id: 'P003',
         product_name: 'Whole Wheat Bread',
         quantity: 45,
         unit: 'loaves',
@@ -36,7 +36,7 @@ const sampleProducts: Product[] = [
         update_date: '2025-06-13T09:15:00Z',
     },
     {
-        product_code: 'P004',
+        product_id: 'P004',
         product_name: 'Artisan Cheese (Cheddar)',
         quantity: 22,
         unit: 'blocks',
@@ -48,7 +48,7 @@ const sampleProducts: Product[] = [
         update_date: '2025-06-13T14:45:00Z',
     },
     {
-        product_code: 'P005',
+        product_id: 'P005',
         product_name: 'Organic Milk (1 Gallon)',
         quantity: 10,
         unit: 'gallons', // Example: low stock
@@ -60,7 +60,7 @@ const sampleProducts: Product[] = [
         update_date: '2025-06-12T16:00:00Z',
     },
     {
-        product_code: 'P006',
+        product_id: 'P006',
         product_name: 'Fresh Eggs (Large)',
         quantity: 5,
         unit: 'dozens', // Example: below ROP
@@ -72,7 +72,7 @@ const sampleProducts: Product[] = [
         update_date: '2025-06-11T08:00:00Z',
     },
     {
-        product_code: 'P007',
+        product_id: 'P007',
         product_name: 'Avocado (Haas)',
         quantity: 0, // Example: out of stock
         unit: 'pcs',
@@ -84,7 +84,7 @@ const sampleProducts: Product[] = [
         update_date: '2025-06-11T12:00:00Z',
     },
     {
-        product_code: 'P008',
+        product_id: 'P008',
         product_name: 'Canned Tomatoes',
         quantity: 200,
         unit: 'cans',

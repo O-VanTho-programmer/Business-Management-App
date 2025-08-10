@@ -9,7 +9,11 @@ export async function POST(res: Response) {
         let totalAmount = 0;
 
         for (let p of products) {
-            totalAmount += p.price * p.quantity_change;
+            if (p.discounted_price) {
+                totalAmount += p.discounted_price * p.quantity_change;
+            } else {
+                totalAmount += p.price * p.quantity_change;
+            }
         }
 
         const transId = Math.random().toString(36).substr(2, 5).toUpperCase();
@@ -19,20 +23,27 @@ export async function POST(res: Response) {
         );
 
         for (let p of products) {
-            await pool.query(
-                `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans) VALUES (?, ?, ?, ?)`,
-                [transId, p.product_code, p.quantity_change, p.price]
-            )
+            if (p.discounted_price) {
+                await pool.query(
+                    `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans, discounted_price) VALUES (?, ?, ?, ?, ?)`,
+                    [transId, p.product_id, p.quantity_change, p.price, p.discounted_price]
+                )
+            } else {
+                await pool.query(
+                    `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans) VALUES (?, ?, ?, ?)`,
+                    [transId, p.product_id, p.quantity_change, p.price]
+                )
+            }
 
             await pool.query(`
                 UPDATE product
-                SET quantity_in_stock = ?
+                SET quantity_in_stock = ?, update_date = NOW()
                 WHERE product_id = ?; 
-            `, [p.quantity - p.quantity_change, p.product_code]);
+            `, [p.quantity - p.quantity_change, p.product_id]);
 
             await pool.query(
                 `INSERT INTO inventory_transaction (type, quantity, previous_quantity, new_quantity, product_id, user_id, trans_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                ['SALE', p.quantity_change, p.quantity, p.quantity_change - p.quantity, p.product_code, userId, transId]
+                ['SALE', p.quantity_change, p.quantity, p.quantity - p.quantity_change, p.product_id, userId, transId]
             );
         }
         return NextResponse.json({ status: 200 });

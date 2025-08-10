@@ -5,7 +5,7 @@ import AlertTag from '../AlertTag/AlertTag';
 type Props = {
     products: Product[],
     pendingChanges: {[code: string]: number | null},
-    onRopChange: (product_code: string, newROP: number | null) => void;
+    onRopChange: (product_id: string, newROP: number | null) => void;
 }
 
 export default function TableSetROP({ products, pendingChanges, onRopChange }: Props) {
@@ -26,18 +26,18 @@ export default function TableSetROP({ products, pendingChanges, onRopChange }: P
                     <tbody>
                         {products.map((product) => {
 
-                            const displayROP = (pendingChanges[product.product_code] !== null ? pendingChanges[product.product_code] : product.ROP)
+                            const displayROP = (pendingChanges[product.product_id] === null || pendingChanges[product.product_id] === undefined ? product.ROP : pendingChanges[product.product_id])
                             const isLowStock = product.ROP !== undefined && product.ROP > product.quantity;
                             const isOutOfStock = product.quantity === 0;
 
                             return (
-                                <tr key={product.product_code}>
+                                <tr key={product.product_id}>
                                     <td className="px-6 py-4 whitespace-nowrap">
                                         <div className="flex items-center">
                                             <Package size={18} className="text-gray-500 mr-2" />
                                             <div>
                                                 <p className="text-sm font-medium text-gray-900">{product.product_name}</p>
-                                                <p className="text-xs text-gray-500">CODE: {product.product_code}</p>
+                                                <p className="text-xs text-gray-500">CODE: {product.product_id}</p>
                                             </div>
                                         </div>
                                     </td>
@@ -49,7 +49,7 @@ export default function TableSetROP({ products, pendingChanges, onRopChange }: P
                                             type="number"
                                             min="0"
                                             value={displayROP === null || displayROP === undefined ? '' : displayROP}
-                                            onChange={(e) => onRopChange(product.product_code, e.target.value === '' ? null : parseInt(e.target.value))}
+                                            onChange={(e) => onRopChange(product.product_id, e.target.value === '' ? null : parseInt(e.target.value))}
                                             className="w-24 border border-gray-300 rounded-md p-2 text-sm text-center
                                  focus:ring-blue-500 focus:border-blue-500 transition-all duration-150"
                                             placeholder="Set ROP"

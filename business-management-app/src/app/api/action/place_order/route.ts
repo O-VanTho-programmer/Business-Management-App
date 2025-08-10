@@ -20,18 +20,18 @@ export async function POST(req: Request) {
         for(let p of products) {
             await pool.query(
                 `INSERT INTO transaction_product (transaction_id, product_id, change_quantity, price_at_trans) VALUES (?, ?, ?, ?)`,
-                [transId, p.product_code, p.quantity_change, p.price]
+                [transId, p.product_id, p.quantity_change, p.price]
             )
 
             await pool.query(`
                 UPDATE product
-                SET quantity_in_stock = ?
+                SET quantity_in_stock = ?, update_date = NOW()
                 WHERE product_id = ?; 
-            `, [p.quantity + p.quantity_change, p.product_code]);
+            `, [p.quantity + p.quantity_change, p.product_id]);
 
             await pool.query(
                 `INSERT INTO inventory_transaction (type, quantity, previous_quantity, new_quantity, product_id, user_id, trans_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,
-                ['RESTOCK', p.quantity_change, p.quantity, p.quantity_change + p.quantity, p.product_code, userId, transId]
+                ['RESTOCK', p.quantity_change, p.quantity, p.quantity_change + p.quantity, p.product_id, userId, transId]
             );
         }
 

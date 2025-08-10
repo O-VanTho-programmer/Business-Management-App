@@ -24,7 +24,7 @@ function Order() {
 
     const handleAddProduct = (product: Product) => {
         setSelectedProducts(prev => {
-            let existIndex = prev.findIndex(p => p.product_code === product.product_code);
+            let existIndex = prev.findIndex(p => p.product_id === product.product_id);
 
             if (existIndex !== -1) {
                 let updated = [...prev];
@@ -42,14 +42,14 @@ function Order() {
         })
     }
 
-    const handleChangeQuantity = (product_code: string, quantity_change: number) => {
+    const handleChangeQuantity = (product_id: string, quantity_change: number) => {
         setSelectedProducts(prev =>
-            prev.map(product => product.product_code === product_code ? { ...product, quantity_change: quantity_change } : product)
+            prev.map(product => product.product_id === product_id ? { ...product, quantity_change: quantity_change } : product)
         )
     }
 
-    const handleDeleteOrderProduct = (product_code: string) => {
-        setSelectedProducts(prev => prev.filter(p => p.product_code !== product_code));
+    const handleDeleteOrderProduct = (product_id: string) => {
+        setSelectedProducts(prev => prev.filter(p => p.product_id !== product_id));
     }
 
     const handlePlaceOrder = async () => {
@@ -76,10 +76,6 @@ function Order() {
 
     const { data: orderHistory } = useFetchList("orders");
 
-    useEffect(() => {
-        console.log(orderHistory);
-    }, [orderHistory])
-
     if (loading) {
         return <Loading state='loading' />;
     }
@@ -88,24 +84,38 @@ function Order() {
         <div className=''>
             <div className='mt-4 flex justify-between items-center gap-4 w-2/3 pr-4'>
                 <h1>Order Placement</h1>
-                <Button onClick={handlePlaceOrder} text_color='text-white' icon='PackagePlus' bg_color='blue' title='Place Order' isDisable={false} />
+
+                <div className='flex gap-2'>
+                    <button onClick={() => window.location.href = '/dashboard/invoice_scanner'} type="button"
+                        className="relative overflow-hidden flex whitespace-nowrap items-center py-2 px-4 shadow-sm gap-2 rounded-lg
+                    transition-all duration-300 ease-in-out transform cursor-pointer
+                    focus:outline-none focus:ring-2 focus:ring-offset-2
+                    font-semibold bg-white text-gray-800 border border-gray-300 hover:scale-105 hover:shadow-lg
+                    hover:bg-gradient-to-r hover:from-purple-500 hover:via-pink-500 hover:to-red-500 hover:text-white focus:ring-blue-500">
+                        Scan Invoice
+                        <span className="absolute text-white top-0 right-0 px-4 py-1 text-xs tracking-wider text-center uppercase whitespace-no-wrap origin-bottom-left transform rotate-45 -translate-y-full translate-x-1/3 dark:bg-violet-600">New</span>
+                    </button>
+
+                    <Button onClick={handlePlaceOrder} icon='PackagePlus' bg_color='blue' title='Place Order' isDisable={false} />
+                </div>
             </div>
 
-            <div className='flex gap-4 max-h-[580px]'>
+            <div className='flex gap-4 max-h-[580px] mb-6'>
                 <div className='wrapper p-4 flex-2/3'>
                     <ProductListTable onDeleteProduct={handleDeleteOrderProduct} onQuantityChange={handleChangeQuantity} products={selectedProducts} type='order_placement' />
                 </div>
 
                 <div className='wrapper p-4 flex-1/3 flex flex-col gap-3'>
                     <h3 className=''>Products List</h3>
-                    <SearchBar placeholder='Search products' onSearch={changeSearchVal} />
+                    <SearchBar placeholder='Search products by name or code' onSearch={changeSearchVal} />
                     <ProductList handleAddProduct={handleAddProduct} products={products} type='order' />
                 </div>
             </div>
 
             {/* Order History Section */}
-            <SaleTransactionHistory trans={orderHistory || []} />
-        </div>
+            <SaleTransactionHistory type='order' trans={orderHistory || []} />
+
+        </div >
     )
 }
 
