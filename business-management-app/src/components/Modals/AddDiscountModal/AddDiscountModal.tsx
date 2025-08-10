@@ -315,6 +315,10 @@ export default function AddDiscountModal({ discount, isSaving, isOpen, onSave, o
                 {isCategoryDropdownOpen && (
                   <div className='absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-xl max-h-60 overflow-y-auto'>
                     {allCategories.map((category: Category) => {
+                      if(category.category_id === 'ALL'){
+                        return null;
+                      }
+
                       const isSelected = selectedCategories.some(cat => cat.category_id === category.category_id);
 
                       return (

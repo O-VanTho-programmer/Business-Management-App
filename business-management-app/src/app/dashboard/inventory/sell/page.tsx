@@ -63,9 +63,22 @@ function SaleProduct() {
         return acc;
     }, 0);
 
-    const calculateTotal = () => {
-        let total = calculateSubtotal;
+    const calculateDiscountedTotal = selectedProducts.reduce((acc, product) => {
+        if (product.discounted_price !== undefined) {
+            return acc + product.discounted_price;
+        } else if (product.price && product.quantity_change) {
+            return acc + product.price * product.quantity_change;
+        }
+        return acc;
+    }, 0);
 
+    const calculateTotal = () => {
+        // If products have discounted prices, use them; otherwise use the old calculation
+        if (selectedProducts.some(product => product.discounted_price !== undefined)) {
+            return calculateDiscountedTotal;
+        }
+
+        let total = calculateSubtotal;
         if (appliedDiscount) {
             if (appliedDiscount.type === 'PERCENTAGE') {
                 total = total - (total * appliedDiscount.value / 100);
@@ -77,8 +90,23 @@ function SaleProduct() {
         return Math.max(0, total); // Ensure total doesn't go below 0
     };
 
-    const handleApplyDiscount = (discountCode: string) => {
+    const handleApplyDiscount = async (discountCode: string) => {
+        try {
+            const res = await api.post(`valid_discount`, {
+                discount_code: discountCode,
+                selectedProducts
+            });
 
+            if (res.status === 200) {
+                setAppliedDiscount(res.data.discount);
+                setSelectedProducts(res.data.updatedProducts);
+                showAlert(res.data.message, 'success');
+            } else {
+                showAlert(res.data.message, 'error');
+            }
+        } catch (error: any) {
+            console.error('Error applying discount:', error);
+        }
     }
 
     const handleRemoveDiscount = () => {

@@ -67,6 +67,14 @@ export async function POST(req: Request) {
       message = "Discount added!";
     }
 
+    if (selectedCategories.length === 0) {
+      selectedCategories.push({
+        category_id: "ALL",
+        category_name: "All",
+        description: "",
+      });
+    }
+
     // Apply discount to categories
     await applyDiscountToEntities(selectedCategories, discount.code, "category_id");
     await applyDiscountToEntities(selectedProducts, discount.code, "product_id");

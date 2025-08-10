@@ -9,4 +9,6 @@ interface Product {
     ROP?: number;
     category?: string;
     update_date?: string;
+    discounted_price?: number;
+    discount_amount?: number;
 }
