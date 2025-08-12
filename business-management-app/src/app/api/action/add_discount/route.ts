@@ -79,7 +79,7 @@ export async function POST(req: Request) {
     await applyDiscountToEntities(selectedCategories, discount.code, "category_id");
     await applyDiscountToEntities(selectedProducts, discount.code, "product_id");
 
-    return NextResponse.json({ message }, { status: 200 });
+    return NextResponse.json({ message }, { status: 201 });
   } catch (error) {
     console.error("Error in add_discount:", error);
     return NextResponse.json({ message: "Server error" }, { status: 500 });

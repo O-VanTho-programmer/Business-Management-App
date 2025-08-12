@@ -14,7 +14,9 @@ export async function GET(req: Request) {
             conditions.push(`(p.product_name LIKE "%${search}%" OR p.product_id LIKE "%${search}%")`);
         }
 
-        if (stock === "low") {
+        if(stock==="low-out"){
+            conditions.push(`(p.quantity_in_stock BETWEEN 1 AND p.ROP AND p.ROP IS NOT NULL) OR (p.quantity_in_stock = 0)`);
+        }else if (stock === "low") {
             conditions.push(`(p.quantity_in_stock BETWEEN 1 AND p.ROP AND p.ROP IS NOT NULL)`);
         } else if (stock === "out") {
             conditions.push(`p.quantity_in_stock = 0`);

@@ -35,7 +35,7 @@ export async function POST(req: Request) {
             );
         }
 
-        return NextResponse.json({status: 200});
+        return NextResponse.json({status: 201});
 
     } catch (error) {
         console.error("Error processing order:", error);

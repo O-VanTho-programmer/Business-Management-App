@@ -17,7 +17,7 @@ export async function POST(req: Request) {
 
         await pool.query(query, [category_id, category_name, description]);
 
-        return NextResponse.json({ status: 200 });
+        return NextResponse.json({ status: 201 });
     } catch (error) {
         console.log("Error add category API", error);
         return NextResponse.json({ status: 500 });
