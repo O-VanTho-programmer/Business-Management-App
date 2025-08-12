@@ -92,7 +92,7 @@ export default function ProductListTable({ products, type, onQuantityChange, onD
                 </span>
             );
         }
-        if (product.ROP && product.ROP > product.quantity) {
+        if (product.ROP && product.ROP >= product.quantity) {
             return (
                 <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                     <div className="w-2 h-2 bg-yellow-400 rounded-full mr-1.5"></div>
