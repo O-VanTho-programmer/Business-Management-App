@@ -1,7 +1,7 @@
 import pool from "@/lib/db";
 import { NextResponse } from "next/server";
 
-export async function POST(res: Response){
+export async function POST(res: Request){
     try {
         const body = await res.json();
         const {productCodeAndNewROP} = body;
