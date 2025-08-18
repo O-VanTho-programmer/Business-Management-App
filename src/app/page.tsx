@@ -40,6 +40,7 @@ export default function Login() {
 
         if (res.status === 200) {
           showAlert(res.data.message, "success");
+          window.location.href = '/dashboard'
         } else {
           showAlert(res.data.message, "error");
         }
@@ -61,9 +62,10 @@ export default function Login() {
           password
         });
 
-        if (res.status === 200) {
+        if (res.status === 201) {
           showAlert(res.data.message, "success");
           setIsLogin(true);
+          window.location.href = '/'
         } else {
           showAlert(res.data.message, "error");
         }
