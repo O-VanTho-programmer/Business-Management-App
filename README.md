@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Stock & Revenue Management System with Invoice Scanner
 
-## Getting Started
+A full-stack **Business Management Web App** built with **Next.js**, **React**, **TypeScript**, and **MySQL**.  
+It helps businesses manage products, inventory, sales, and discounts, **with an AI-powered Vietnamese invoice scanner** to automatically extract and process bill data.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Features
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. Invoice Scanner (Highlight Feature)
+- Upload Vietnamese bills or invoices in **image or PDF format**.
+- Automatically extracts structured data:
+  - Customer name
+  - Product list (name, quantity, price)
+  - Total price
+  - Date & time
+- Supports **batch scanning** for multiple invoices.
+- Reduces manual data entry and human error.
+- Integrated with sales and inventory modules to update stock and transactions automatically.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. Product & Inventory Management
+- Add, update, and delete products.
+- Track real-time stock levels.
+- Record inventory transactions (restock and sales).
+- Automatically adjusts stock quantities when orders are processed.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Discounts & Promotions
+- Create discounts for products, categories, or both.
+- Supports **percentage** and **fixed amount** discounts.
+- Define usage limits, discount limits, and active periods.
+- Tracks usage of discounts for better reporting.
 
-## Learn More
+### 4. Sales & Transactions
+- Record sales transactions with detailed product info.
+- Automatic calculation of total revenue.
+- Generate unique transaction IDs.
+- Order status tracking: `pending`, `cooking`, `complete`.
 
-To learn more about Next.js, take a look at the following resources:
+### 5. Frontend
+- Dynamic tables, forms, and modals for managing products, discounts, and sales.
+- Status indicators and user-friendly alerts.
+- Currency formatted in **Vietnamese Dong (VND)**.
+- Clean UI with Tailwind CSS and Lucide React icons.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 6. Backend
+- RESTful APIs for CRUD operations on products, discounts, and transactions.
+- Handles discount logic, inventory updates, and invoice scanning.
+- Optimized MySQL database design with proper relationships.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Live Demo
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Access the app here: [Business Management App](https://business-management-app-3z33.vercel.app/)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## API Endpoints (Examples)
+
+| Method | Endpoint                       | Description                           |
+|--------|--------------------------------|---------------------------------------|
+| POST   | `/api/action/add_discount`      | Add or update a discount              |
+| GET    | `/api/discounts`               | List discounts with pagination        |
+| POST   | `/api/action/sell_products`    | Process a sale transaction            |
+| POST   | `/api/action/scan_invoice`     | Scan and extract data from a bill     |
+| POST   | `/api/action/delete_discount`  | Delete a discount                     |
+
+---
+
+## Notes
+- All currency is displayed in **Vietnamese Dong (VND)**.
+- Discounts can apply to **products, categories, or both**.
+- Inventory automatically updates after sales or restocks.
+- The invoice scanner reduces manual data entry and integrates directly with the sales system.
+
+---
+
+## License
+MIT License © 2025 [Your Name]
