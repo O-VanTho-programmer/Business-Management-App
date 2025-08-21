@@ -1,6 +1,14 @@
 const formatCurrency = (amount: number | string) => {
 
-    const numAmount = typeof amount === 'string' ? parseFloat(amount.replace(/\./g, '')) : amount;
+    let numAmount : number;
+
+    if(typeof amount === 'string'){
+        const clean = amount.replace(/[^\d.-]/g, "");
+        numAmount = parseFloat(clean) || 0;
+    }else {
+        numAmount = amount;
+    }
+
     return new Intl.NumberFormat('vi-VN', { // Using Vietnamese locale for currency format
         style: 'currency',
         currency: 'VND',

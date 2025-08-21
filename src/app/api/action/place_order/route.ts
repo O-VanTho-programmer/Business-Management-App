@@ -25,9 +25,9 @@ export async function POST(req: Request) {
 
             await pool.query(`
                 UPDATE product
-                SET quantity_in_stock = ?, update_date = NOW()
+                SET quantity_in_stock = quantity_in_stock + ?, update_date = NOW()
                 WHERE product_id = ?; 
-            `, [p.quantity + p.quantity_change, p.product_id]);
+            `, [p.quantity_change, p.product_id]);
 
             await pool.query(
                 `INSERT INTO inventory_transaction (type, quantity, previous_quantity, new_quantity, product_id, user_id, trans_id) VALUES (?, ?, ?, ?, ?, ?, ?)`,

@@ -14,7 +14,7 @@ export async function GET(req: Request) {
         const [[orderCostResult]] = await pool.query(`
             SELECT COALESCE(SUM(total_amount), 0) as total_order_cost
             FROM sale_transaction
-            WHERE type = 'ORDER'AND trans_date > '${startDate}' AND trans_date <= '${endDate}'
+            WHERE type = 'ORDER' AND trans_date > '${startDate}' AND trans_date <= '${endDate}'
         `) as any[];
 
         const [[revenueResult]] = await pool.query(`
