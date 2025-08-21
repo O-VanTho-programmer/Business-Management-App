@@ -72,6 +72,56 @@ Access the app here: [Business Management App](https://business-management-app-3
 - The invoice scanner reduces manual data entry and integrates directly with the sales system.
 
 ---
+## Invoice Scanner (OCR)
+
+Our project includes an AI-powered invoice scanner that automatically extracts structured data from invoices, such as:
+
+- Customer name
+- Product list
+- Quantity and unit price
+- Total amount
+
+It is optimized for Vietnamese invoices and can process both image (JPG, PNG) and PDF formats.
+
+### How it Works
+
+1. **Backend OCR API (Flask + Ngrok)**  
+   - The Colab notebook runs a Flask server and exposes it through an Ngrok tunnel.  
+   - The Flask API listens for **POST** requests containing invoice images.  
+   - When a request is received, the Colab notebook processes the image using an OCR model and extracts the data.
+
+2. **Frontend Request Flow (React)**  
+   - The React app collects invoice images from users.  
+   - It sends a **POST** request to the Flask API via the Ngrok URL.  
+   - The API responds with structured invoice data (JSON), which the frontend displays or saves.
+
+3. **Benefits**  
+   - No need for local OCR setup; all processing happens on Colab.  
+   - Easy to integrate with your web or desktop application.  
+   - Supports experimentation with different OCR models in Colab.
+
+### How to Use
+
+1. **Open the Notebook**  
+   [Open in Google Colab](https://colab.research.google.com/github/O-VanTho-programmer/Business-Management-App/blob/main/InvoiceScanner.ipynb)
+
+2. **Run the Flask + Ngrok Server**  
+   - Execute the cells in order.  
+   - The Ngrok URL will be displayed after startup.
+
+3. **Send Invoice Data from Frontend**  
+   - Use the Ngrok URL to send **POST** requests with invoice images.  
+   - The OCR API will return structured data in JSON format.
+
+4. **View Results**  
+   - Extracted invoice information can be displayed in tables, JSON, or exported to your system.
+
+### Notes
+- GPU acceleration in Colab is optional but recommended for faster OCR processing.  
+- You can fork the notebook to modify or experiment with the OCR pipeline.  
+
+### Contact
+If you encounter any issues or have questions about the invoice scanner, feel free to contact me at: **[your-email@example.com]**
 
 ## License
 MIT License © 2025 [Your Name]
