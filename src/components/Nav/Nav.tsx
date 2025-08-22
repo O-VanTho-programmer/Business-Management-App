@@ -1,9 +1,39 @@
-import React from 'react'
+'use client'
+
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './Nav.module.css';
 import { FaAngleDown } from 'react-icons/fa';
 import { IoMdNotificationsOutline } from 'react-icons/io';
+import api from '@/lib/axios';
 
 function Nav() {
+    const [openDropdown, setOpenDropdown] = useState<boolean>(false);
+    const menuRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handleClickOutSideMenu = (e: MouseEvent) => {
+            if(menuRef.current && !menuRef.current.contains(e.target as Node)){
+                setOpenDropdown(false);
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutSideMenu);
+
+        return () => document.removeEventListener("mousedown", handleClickOutSideMenu);
+    }, [])
+
+    const handleLogout = async () => {
+        try {
+            const res = await api.post('action/logout');
+
+            if(res.status === 200){
+                window.location.href = '/';
+            }
+        } catch (error) {
+            console.log("Error when logout", error);
+        }
+    }
+
     return (
         <nav className='container flex items-center justify-between bg-white! shadow-sm'>
             <div className='flex items-center'>
@@ -45,8 +75,20 @@ function Nav() {
 
             <div className='flex gap-3 ml-2'>
                 <button className='w-[35px] h-[35px] rounded-lg border hover:bg-blue-400 hover:text-white cursor-pointer'><IoMdNotificationsOutline size={22} className='ml-auto mr-auto' /></button>
-                <div className='rounded-full w-[35px] h-[35px] cursor-pointer border border-white hover:border-gray-500'>
+                <div ref={menuRef} onClick={() => setOpenDropdown(!openDropdown)} className='relative rounded-full w-[35px] h-[35px] cursor-pointer border border-white hover:border-gray-500'>
                     <img className='w-full h-auto' src='/avatar.png' />
+
+                    {openDropdown && (
+                        <ul className="absolute right-0 mt-2 w-40 bg-white text-gray-700 rounded-lg shadow-lg border">
+                            <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">Settings</li>
+                            <li
+                                onClick={handleLogout}
+                                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                            >
+                                Logout
+                            </li>
+                        </ul>
+                    )}
                 </div>
             </div>
         </nav>

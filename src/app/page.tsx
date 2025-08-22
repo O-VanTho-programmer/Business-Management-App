@@ -33,17 +33,23 @@ export default function Login() {
 
 
       if (isLogin) {
-        const res = await api.post("action/login", {
-          email,
-          password
-        });
+        try {
+          const res = await api.post("action/login", {
+            email,
+            password
+          });
 
-        if (res.status === 200) {
           showAlert(res.data.message, "success");
-          window.location.href = '/dashboard'
-        } else {
-          showAlert(res.data.message, "error");
+          window.location.href = '/dashboard';
+
+        } catch (error: any) {
+          if (error.response) {
+            showAlert(error.response.data.message, "error");
+          } else {
+            showAlert("Something went wrong", "error");
+          }
         }
+
 
       } else {
         if (!confirmPassword) {
