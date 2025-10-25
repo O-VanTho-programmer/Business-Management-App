@@ -53,18 +53,6 @@ It helps businesses manage products, inventory, sales, and discounts, **with an 
 
 Access the app here: [Business Management App](https://business-management-app-3z33.vercel.app/)
 
-## API Endpoints (Examples)
-
-| Method | Endpoint                       | Description                           |
-|--------|--------------------------------|---------------------------------------|
-| POST   | `/api/action/add_discount`      | Add or update a discount              |
-| GET    | `/api/discounts`               | List discounts with pagination        |
-| POST   | `/api/action/sell_products`    | Process a sale transaction            |
-| POST   | `/api/action/scan_invoice`     | Scan and extract data from a bill     |
-| POST   | `/api/action/delete_discount`  | Delete a discount                     |
-
----
-
 ## Notes
 - All currency is displayed in **Vietnamese Dong (VND)**.
 - Discounts can apply to **products, categories, or both**.
