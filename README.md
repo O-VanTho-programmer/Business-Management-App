@@ -121,7 +121,4 @@ It is optimized for Vietnamese invoices and can process both image (JPG, PNG) an
 - You can fork the notebook to modify or experiment with the OCR pipeline.  
 
 ### Contact
-If you encounter any issues or have questions about the invoice scanner, feel free to contact me at: **[your-email@example.com]**
-
-## License
-MIT License © 2025 [Your Name]
+If you encounter any issues or have questions about the invoice scanner, feel free to contact me at: **ovantho094@gmail.com**
